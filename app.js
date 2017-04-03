@@ -11,14 +11,14 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
  
 // Create chat bot
 var connector = new builder.ChatConnector({
-    //appId: '9df91066-6576-42b9-a9c9-4365c6b349da',
-    //appPassword: 'cUUU9vRcPiozuS1kn9CBasx'
-    appId: process.env.MICROSOFT_APP_ID,
-    appPassword: process.env.MICROSOFT_APP_PASSWORD
+    appId: '96acae49-5736-448e-ab33-d8e3a2d55182',
+    appPassword: 'ocA7Ea8PSdjpb4S6FUYOTAa'
+    //appId: process.env.MICROSOFT_APP_ID,
+    //appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 var bot = new builder.UniversalBot(connector);
-//server.post('https://qnaapp2.azurewebsites.net/api/messages', connector.listen());
-server.post('/api/messages', connector.listen());
+server.post('https://knowledgehelp2.azurewebsites.net/api/messages', connector.listen());
+//server.post('/api/messages', connector.listen());
 
  
 // Root dialog, triggers search and process its results
