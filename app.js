@@ -563,24 +563,7 @@ bot.dialog('/existingsitefailure', [
 
         session.send("Sorry that I’ve not been able to answer your question here. There is more comprehensive support on our EYDelivers tools page or you may like to contact your local Knowledge Help team(see links) or ask your question in the EYD/WPP Yammer group");
 
-        var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
-                    
-                    .text("New Site Request Failure")
-                    
-                    //.buttons([
-                    //    builder.CardAction.dialogAction(session, "newsiterequestsuccess", null, "Yes"),
-                        
-                   //     builder.CardAction.dialogAction(session, "newsitefailure", null, "No")
-                   // ])
-                        
-                        
-                    
-            ]);
-        session.send(msg);
-        //session.endDialog(msg);
+        
     }
 ]);
 bot.beginDialogAction('existingsitefailure', '/existingsitefailure');
