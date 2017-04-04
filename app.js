@@ -482,7 +482,7 @@ bot.dialog('/requestsubmit', [
                         //builder.CardAction.dialogAction(session, "ticketcomplete", null, "Yes"),
                         builder.CardAction.dialogAction(session, "sendemailrequest", null, "Yes"),
                         
-                        builder.CardAction.dialogAction(session, "", null, "No")
+                        builder.CardAction.dialogAction(session, "completiondiploma", null, "No")
                     ])
             ]);
         session.send(msg);
