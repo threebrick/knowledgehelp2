@@ -176,7 +176,7 @@ bot.beginDialogAction('Locating business info on Singapore or Malaysia companies
 
 
 
-bot.dialog('/Help with Factiva', [
+bot.dialog('/Help using Factiva', [
     function (session) {
         builder.Prompts.choice(session, "Factiva is one of our most popular External Sources and contains news and business information from over 32,000 sources. \nIf your question is one of the below, please type the number.  If not, you can ask your question and I'll try to find the answer for you.", "How do I build an effective search in Factiva|How can I set up alerts on my client or topic|Can Factiva find company, industry or executive profiles|How do I use Factiva quotes and charts?|Does Factiva have a mobile App?");
     },
@@ -190,13 +190,13 @@ bot.dialog('/Help with Factiva', [
         }
     }
 ]);
-bot.beginDialogAction('Help with Factiva', '/Help with Factiva'); 
+bot.beginDialogAction('Help using Factiva', '/Help using Factiva'); 
 
 
 
 bot.dialog('/What is Discover', [
     function (session) {
-        builder.Prompts.choice(session, "Discover is EY's global knowledge portal, it connects you to documents, people and communities so that you can harness the knowledge and expertise of all of EY. \nI can answer a lot of common questions on Discover - either type your question or the number of any of the frequent questions below:", "How can I access EY Discover?|How is EY");
+        builder.Prompts.choice(session, "Discover is EY's global knowledge portal, it connects you to documents, people and communities so that you can harness the knowledge and expertise of all of EY. \nI can answer a lot of common questions on Discover - either type your question or the number of any of the frequent questions below:", "How can I access EY Discover?|How is Discover different from the search on the EY home page?|How can I contribute to Discover?|What is the best way to search for a Credential?");
     },
     function (session, results) {
         if (results.response && results.response.entity != '(quit)') {
