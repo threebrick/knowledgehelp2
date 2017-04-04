@@ -178,7 +178,7 @@ bot.beginDialogAction('Locating business info on Singapore or Malaysia companies
 
 bot.dialog('/Help with Factiva', [
     function (session) {
-        builder.Prompts.choice(session, "Factiva is one of our most popular External Sources and contains news and business information from over 32,000 sources.", "How do I build an effective search in Factiva|How can I set up alerts on my client or topic|Can Factiva find company, industry or executive profiles|How do I use Factiva quotes and charts?|Does Factiva have a mobile App?");
+        builder.Prompts.choice(session, "Factiva is one of our most popular External Sources and contains news and business information from over 32,000 sources. \nIf your question is one of the below, please type the number.  If not, you can ask your question and I'll try to find the answer for you.", "How do I build an effective search in Factiva|How can I set up alerts on my client or topic|Can Factiva find company, industry or executive profiles|How do I use Factiva quotes and charts?|Does Factiva have a mobile App?");
     },
     function (session, results) {
         if (results.response && results.response.entity != '(quit)') {
@@ -196,7 +196,7 @@ bot.beginDialogAction('Help with Factiva', '/Help with Factiva');
 
 bot.dialog('/What is Discover', [
     function (session) {
-        builder.Prompts.choice(session, "Discover is EY's global knowledge portal, it connects you to documents, people and communities so that you can harness the knowledge and expertise of all of EY.", "How can I access EY Discover?|How is EY");
+        builder.Prompts.choice(session, "Discover is EY's global knowledge portal, it connects you to documents, people and communities so that you can harness the knowledge and expertise of all of EY. \nI can answer a lot of common questions on Discover - either type your question or the number of any of the frequent questions below:", "How can I access EY Discover?|How is EY");
     },
     function (session, results) {
         if (results.response && results.response.entity != '(quit)') {
@@ -776,7 +776,7 @@ bot.beginDialogAction('externalclient', '/externalclient');
 
 bot.dialog('/multiplepeople', [
     function (session) {
-        session.send("If you are requesting access for multiple users, complete this Excel formand send it to Client Portal Helpdesk clientportal@ey.com.");
+        session.send("If you are requesting access for multiple users, complete this Excel formand send it to Client Portal Helpdesk clientportal@ey.com. \nhttp://chas.ey.net/GLOBAL/CKR/ASIAPACEXTLCONTENTCKR.NSF/ff9ebbe29791239e85257138005b75d9/a31e051d99a604c8c12579aa003f7f54/$FILE/EYD%20Bulk%20Upload%20Form_client%20portal.xlsx");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -966,8 +966,8 @@ bot.beginDialogAction('accessrequestsuccess', '/accessrequestsuccess');
 bot.dialog('/accessrequestfailure', [
     function (session) {
 
-        session.send("Sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our EYD tools page or you may like to contact the Client Portal Helpesk or your Engagment Admin.");
-        session.send("Access Request Failure.");
+        session.send("I'm sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our EYD tools page or you may like to contact the Client Portal Helpesk or your Engagment Admin.");
+       // session.send("Access Request Failure.");
 
     }   
 ]);
@@ -1082,7 +1082,7 @@ bot.dialog('/knownissuefailure', [
     function (session) {
 
         session.send("Sorry that I’ve not been able to solve your issue here, IT Services provide technical support for EYDelivers. Please call your local IT Service Desk or use the IT Self-Service portalto chat with a technician or log a ticket.");
-        session.send("Access Request Failure.");
+        //session.send("Access Request Failure.");
 
     }   
 ]);
