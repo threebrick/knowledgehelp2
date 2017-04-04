@@ -585,7 +585,7 @@ bot.dialog('/newsite', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("New sites can be requested using the [EYDelivers Request & Tracking site](https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/)(we have a quick reference guide available [here](https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/). As EYDelivers sites can be made available to clients and third parties sites it’s important they’re managed by a trained member of the Engagement Team (called an Engagement Administrator). A site can’t be created until the Engagement Administrators listed on the request have completed the mandatory eLearningand achieve a passing score of 70%")
+                    .text("New sites can be requested using the [EYDelivers Request & Tracking site]:https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/(we have a quick reference guide available [here]: https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/. As EYDelivers sites can be made available to clients and third parties sites it’s important they’re managed by a trained member of the Engagement Team (called an Engagement Administrator). A site can’t be created until the Engagement Administrators listed on the request have completed the mandatory eLearningand achieve a passing score of 70%")
                     
                     .buttons([
                         builder.CardAction.dialogAction(session, "newsitemessage2", null, "Next message")
