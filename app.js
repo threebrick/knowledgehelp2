@@ -604,7 +604,7 @@ bot.dialog('/newsitemessage2', [
     
     function (session) {
 
-        session.send("An Engagement Administrator (EA) is a “super-user” of the engagement who has completed mandatory eLearning. An EA has full access to everything in the engagement, has special admin only rights and is the first point of contact for usage questions by team members. It is recommended to have at least two EAs identified for each engagement.");
+        session.send("[bing](http://bing.com) An Engagement Administrator (EA) is a “super-user” of the engagement who has completed mandatory eLearning. An EA has full access to everything in the engagement, has special admin only rights and is the first point of contact for usage questions by team members. It is recommended to have at least two EAs identified for each engagement.");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
