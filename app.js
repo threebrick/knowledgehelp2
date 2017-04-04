@@ -605,7 +605,7 @@ bot.dialog('/newsitemessage2', [
     
     function (session) {
 
-        session.send("[bing](http://bing.com) An Engagement Administrator (EA) is a “super-user” of the engagement who has completed mandatory eLearning. An EA has full access to everything in the engagement, has special admin only rights and is the first point of contact for usage questions by team members. It is recommended to have at least two EAs identified for each engagement.");
+        session.send("An Engagement Administrator (EA) is a “super-user” of the engagement who has completed mandatory eLearning. An EA has full access to everything in the engagement, has special admin only rights and is the first point of contact for usage questions by team members. It is recommended to have at least two EAs identified for each engagement.");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -635,7 +635,7 @@ bot.dialog('/requestreferenceguide', [
     
     function (session) {
 
-        session.send("You may like to review our “Request an EYD site quick reference guide” - http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087");
+        session.send("You may like to review our [Request an EYD site quick reference guide](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087)");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -675,26 +675,9 @@ bot.dialog('/newsitefailure', [
     
     function (session) {
 
-        session.send("Sorry that I’ve not been able to answer your question here. There is more comprehensive support on our EYDelivers tools page or you may like to contact your local Knowledge Help team(see links) or ask your question in the EYD/WPP Yammer group");
+        session.send("Sorry that I’ve not been able to answer your question here. There is more comprehensive support on our [EYDelivers tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087) or you may like to contact your local [Knowledge Help team](http://chs.ey.net/knowledgehelp) or ask your question in the [EYD/WPP Yammer group](https://www.yammer.com/ey.com/#/threads/inGroup?type=in_group&feedId=2770414)");
 
-        var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
-                    
-                    .text("New Site Request Failure")
-                    
-                    //.buttons([
-                    //    builder.CardAction.dialogAction(session, "newsiterequestsuccess", null, "Yes"),
-                        
-                   //     builder.CardAction.dialogAction(session, "newsitefailure", null, "No")
-                   // ])
-                        
-                        
-                    
-            ]);
-        session.send(msg);
-        //session.endDialog(msg);
+        
     }
 ]);
 bot.beginDialogAction('newsitefailure', '/newsitefailure');
