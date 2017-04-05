@@ -348,7 +348,7 @@ bot.dialog('/completiondiploma', [
     
     function (session) {
 
-        session.send("First let's retrieve your ‘Completion Diploma’ once you have passed the eLearning:* Go back in EYLeads to the Activity Details page for EYDelivers for Engagement Administrators * Scroll down in the lesson description November 2016 EYD V3.0EYDelivers: Request an EYD site QRG * Click on the diploma icon * Make a print screen of the diploma");
+        session.send("First let's retrieve your ‘Completion Diploma’ once you have passed the eLearning:\n\n* Go back in EYLeads to the Activity Details page for EYDelivers for Engagement Administrators \n* Scroll down in the lesson description November 2016 EYD V3.0EYDelivers: Request an EYD site QRG \n* Click on the diploma icon \n* Make a print screen of the diploma");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
