@@ -1199,12 +1199,12 @@ bot.dialog('/questnetinfo', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("Questnet is a good source for obtaining digital copies of business profile reports and audited financial statements of companies in Singapore / Malaysia. Would you like to explore how to access Questnet content?")
+                    .text("Questnet is a good source for obtaining digital copies of business profile reports and audited financial statements of companies in Singapore / Malaysia.  Are you based in Singapore or Malaysia?")
                     
                     .buttons([
-                        builder.CardAction.dialogAction(session, "location", null, "Yes"),
+                        builder.CardAction.dialogAction(session, "account", null, "Yes"),
                         
-                        builder.CardAction.dialogAction(session, "howtohelp", null, "No")
+                        builder.CardAction.dialogAction(session, "purchaseorfind", null, "No")
                     ])
             ]);
         session.send(msg);
@@ -1513,15 +1513,15 @@ bot.dialog('/acraticketsubmit', [
     
     function (session) {
 
-var transporter = nodemailer.createTransport();
+//var transporter = nodemailer.createTransport();
 
-transporter.sendMail({
-   from: 'darnell@threebrick.com',
-   to: 'darnell.clayton@ey.com',
-   subject: 'hello',
-   html: '<b>hello world!</b>',
-   text: 'hello world!'
-});
+//transporter.sendMail({
+//   from: 'darnell@threebrick.com',
+//   to: 'darnell.clayton@ey.com',
+//   subject: 'hello',
+//   html: '<b>hello world!</b>',
+//   text: 'hello world!'
+//});
 
 
         session.send("These requests are handled Monday-Wednesday 9:00am-3:30pm and Thursday 09:00- 11:30am (Sydney time). If your query is urgent and outside of these times please contact Knowledge Help quoting message ‘urgent-questnet-bot’.");
