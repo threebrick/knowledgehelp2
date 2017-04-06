@@ -2,6 +2,9 @@
 //var _ = require('lodash');
 var builder = require('botbuilder');
 var restify = require('restify');
+
+var nodemailer = require('nodemailer');
+
  
 // Setup Restify Server
 var server = restify.createServer();
@@ -1430,20 +1433,18 @@ bot.beginDialogAction('sendemail', '/sendemail');
 bot.dialog('/acrachargecodequestions', [
     function (session) {
         //session.send("Good choice! You'll soon be able to access Questnet reports directly.  I just need to collect 3 pieces of info from you to be able to generate a username and password.");
+        builder.Prompts.text(session, "Please provide a Singapore/Malaysia charge code.");
+    },
+    function (session, results) {
+        session.send("You entered '%s'", results.response);
+        session.userData.singmachargecode = results.response;
         builder.Prompts.text(session, "Please specify the ACRA registration/entity number or provide detailed info to help our researcher locate the reports you need.");
     },
     function (session, results) {
         session.send("You entered '%s'", results.response);
         session.userData.acraregistration = results.response;
-        builder.Prompts.text(session, "And what is the charge code you'd like to use to purchase the report(s)?  We'll ensure a quick turnaround for your request.");
-    },
-    
-    
-
-    function (session, results) {
-  //      session.send("You can send a receipts for purchased good with both images and without...");
-        session.send("You entered '%s'", results.response);
-        session.userData.acrachargecode = results.response;
+       
+        //session.userData.acrachargecode = results.response;
         // Send a receipt with images
         var msg = new builder.Message(session)
             .attachments([
@@ -1455,9 +1456,10 @@ bot.dialog('/acrachargecodequestions', [
                     ])
                     .facts([
                        // builder.Fact.create(session, "SR1234567898", "Ticket Number"),
-                        builder.Fact.create(session, "" + session.userData.acraregistration + "", " ACRA Registration Number"),
+                        builder.Fact.create(session, "" + session.userData.singmachargecode + "", "Charge Code"),
+                        builder.Fact.create(session, "" + session.userData.acraregistration + "", " ACRA Registration Number")
                        
-                        builder.Fact.create(session, "" + session.userData.acrachargecode + "", "Charge Code")
+                        
                         
                         
                     ])
@@ -1465,7 +1467,7 @@ bot.dialog('/acrachargecodequestions', [
                   //  .total("$48.40")
             ]);
         session.send(msg);
-        session.beginDialog('/acraticketsubmit');
+        session.beginDialog('/shouldwesubmit');
 
         
         
@@ -1477,12 +1479,51 @@ bot.dialog('/acrachargecodequestions', [
 ]);
 bot.beginDialogAction('acrachargecodequestions', '/acrachargecodequestions');   // <-- no 'matches' option means this can only be triggered by a button.
 
+bot.dialog('/shouldwesubmit', [
+    
+    
+    function (session) {
+        //session.send("These requests are handled Monday-Wednesday 9:00am-3:30pm and Thursday 09:00- 11:30am (Sydney time). If your query is urgent and outside of these times please contact Knowledge Help quoting message ‘urgent-questnet-bot’.");
+//		builder.Prompts.choice(session, "How may I help you?", "ticket|cards|carousel|receipt|actions|(quit)");
+
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    
+                    .text("Would you like to submit now?")
+                    
+                    .buttons([
+                        //builder.CardAction.dialogAction(session, "ticketcomplete", null, "Yes"),
+                        builder.CardAction.dialogAction(session, "acraticketsubmit", null, "Yes"),
+                        
+                        builder.CardAction.dialogAction(session, "acrachargecodequestions", null, "No")
+                    ])
+            ]);
+        session.send(msg);
+        //session.endDialog(msg);
+    }
+    
+]);
+bot.beginDialogAction('shouldwesubmit', '/shouldwesubmit');   // <-- no 'matches' option means this can only be triggered by a button.
 
 
 bot.dialog('/acraticketsubmit', [
     
     
     function (session) {
+
+var transporter = nodemailer.createTransport();
+
+transporter.sendMail({
+   from: 'darnell@threebrick.com',
+   to: 'darnell.clayton@ey.com',
+   subject: 'hello',
+   html: '<b>hello world!</b>',
+   text: 'hello world!'
+});
+
+
         session.send("These requests are handled Monday-Wednesday 9:00am-3:30pm and Thursday 09:00- 11:30am (Sydney time). If your query is urgent and outside of these times please contact Knowledge Help quoting message ‘urgent-questnet-bot’.");
 //		builder.Prompts.choice(session, "How may I help you?", "ticket|cards|carousel|receipt|actions|(quit)");
 
@@ -1585,7 +1626,7 @@ bot.beginDialogAction('waitsuccess', '/waitsuccess');
 bot.dialog('/waitfailure', [
     function (session) {
 
-        session.endDialog("I'm sorry I've not been able to help.  You might find our [Questnet user manual]( http://chs.iweb.ey.com/GLOBAL1/CKR/CLDCKR.NSF/646309c4a5106dcc8525710800779429/46fea6ce1b59ac1986257c9300551609?OpenDocumentContact) helpful or your local Knowledge Help Team will be happy to assist you.");
+        session.endDialog("I'm sorry I've not been able to help.  You might find our [Questnet user manual]( http://chs.iweb.ey.com/GLOBAL1/CKR/CLDCKR.NSF/646309c4a5106dcc8525710800779429/46fea6ce1b59ac1986257c9300551609?OpenDocumentContact) helpful or your local [Knowledge Help Team](http://chs.ey.net/knowledgehelp) will be happy to assist you.");
     }
 ]);
 bot.beginDialogAction('waitfailure', '/waitfailure'); 
