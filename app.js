@@ -80,7 +80,7 @@ bot.dialog('/menu', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("How can I help you today?  (Just type your question or use one of the buttons below)")
+                    .text("How can I help you today?  (Just type your question or click the 'what can I ask you' button below)")
                     
                     .buttons([
                         builder.CardAction.dialogAction(session, "initialquestions", null, "What can I ask you?")
@@ -155,21 +155,24 @@ bot.beginDialogAction('Help with EY Delivers*', '/Help with EY Delivers*');
 bot.dialog('/Locating business info on Singapore or Malaysia companies*', [
     function (session) {
 
-        var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
+        //var msg = new builder.Message(session)
+        //    .textFormat(builder.TextFormat.xml)
+        //    .attachments([
+        //        new builder.HeroCard(session)
                     
-                    .text("Questnet (www.questnet.sq) is a good source for obtaining digital copies of business profile reports and audited financial statements of companies in Singapore / Malaysia. Would you like to explore how to access Questnet content?")
+        //            .text("Questnet (www.questnet.sq) is a good source for obtaining digital copies of business profile reports and audited financial statements of companies in Singapore / Malaysia. Would you like to explore how to access Questnet content?")
                     
-                    .buttons([
-                        builder.CardAction.dialogAction(session, "questnet", null, "Yes"),
+        //            .buttons([
+        //                builder.CardAction.dialogAction(session, "questnet", null, "Yes"),
                         
-                        builder.CardAction.dialogAction(session, "initialquestions", null, "No")
-                    ])
-            ]);
-        session.send(msg);
+        //                builder.CardAction.dialogAction(session, "questnethowhelp", null, "No")
+        //            ])
+        //    ]);
+        //session.send(msg);
         //session.endDialog(msg);
+
+        session.beginDialog('/questnetinfo');
+
     }
 ]);
 bot.beginDialogAction('Locating business info on Singapore or Malaysia companies*', '/Locating business info on Singapore or Malaysia companies*'); 
@@ -213,24 +216,29 @@ bot.beginDialogAction('What is Discover', '/What is Discover');
 bot.dialog('/Finding a research tool', [
     function (session) {
 
-        var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
-                    
-                    .text("Finding a research tool")
-                    
-                    .buttons([
-                        builder.CardAction.dialogAction(session, "account", null, "Yes"),
-                        
-                        builder.CardAction.dialogAction(session, "purchaseorfind", null, "No")
-                    ])
-            ]);
-        session.send(msg);
-        //session.endDialog(msg);
+        session.send("I'm sorry I can't  answer this question yet.  Please type 'menu' to return to the main menu.");
     }
+
 ]);
 bot.beginDialogAction('Finding a research tool', '/Finding a research tool'); 
+
+bot.dialog('/Collaborating using SharePoint', [
+    function (session) {
+
+        session.send("I'm sorry I can't  answer this question yet.  Please type 'menu' to return to the main menu.");
+    }
+
+]);
+bot.beginDialogAction('Collaborating using SharePoint', '/Collaborating using SharePoint');
+
+bot.dialog('/Submitting knowledge', [
+    function (session) {
+
+        session.send("I'm sorry I can't  answer this question yet.  Please type 'menu' to return to the main menu.");
+    }
+
+]);
+bot.beginDialogAction('Submitting knowledge', '/Submitting knowledge');
 
 
 
@@ -1143,7 +1151,7 @@ bot.dialog('/questnetmenu', [
                     .buttons([
                         builder.CardAction.dialogAction(session, "questnetinfo", null, "Yes"),
                         
-                        builder.CardAction.dialogAction(session, "help", null, "No")
+                        builder.CardAction.dialogAction(session, "questnethowhelp", null, "No")
                     ])
             ]);
         session.send(msg);
@@ -1164,6 +1172,13 @@ bot.dialog('/questnetmenu', [
     }
 ]);
 bot.beginDialogAction('questnetmenu', '/questnetmenu'); 
+
+bot.dialog('/questnethowhelp', [
+    function (session) {
+        session.endDialog("How else can I help you?  Global commands that are available anytime:\n\n* menu - returns to the menu.\n* goodbye - End this conversation.\n* help - Displays these commands.");
+    }
+]);
+bot.beginDialogAction('questnethowhelp', '/questnethowhelp'); 
 
 bot.dialog('/help', [
     function (session) {
@@ -1228,12 +1243,13 @@ bot.dialog('/purchaseorfind', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("Would you like us to find it for you or purchase yourself with a credit card?")
+                    .text("Would you like to purchase it yourself (with a credit card), or would you prefer an EY Knowledge researcher to find it for you?")
                     
                     .buttons([
-                        builder.CardAction.dialogAction(session, "acrachargecodequestions", null, "Find it myself"),
+                        builder.CardAction.dialogAction(session, "creditcard", null, "Purchase it myself"),
+                        builder.CardAction.dialogAction(session, "acrachargecodequestions", null, "Find it for me")
                         
-                        builder.CardAction.dialogAction(session, "creditcard", null, "Purchase with cc")
+                        
                     ])
             ]);
         session.send(msg);
@@ -1247,19 +1263,20 @@ bot.beginDialogAction('purchaseorfind', '/purchaseorfind');
 bot.dialog('/creditcard', [
     function (session) {
 
-        var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
+ //       var msg = new builder.Message(session)
+//            .textFormat(builder.TextFormat.xml)
+//            .attachments([
+//                new builder.HeroCard(session)
                     
-                    .text("You can find guidance for how to use your credit card to set up a personal account by clicking the button below")
+//                    .text("You can find guidance for how to use your credit card to set up a personal account by clicking the button below")
                     
-                    .buttons([
-                        builder.CardAction.dialogAction(session, "http://chs.ey.net/servlet/CHSRenderingServlet?contentlD=CT-BB", null, "Use cc for personal account")
-                    ])
-            ]);
-        session.send(msg);
+//                    .buttons([
+//                        builder.CardAction.dialogAction(session, "http://chs.ey.net/servlet/CHSRenderingServlet?contentlD=CT-BB", null, "Use cc for personal account")
+//                    ])
+//            ]);
+//        session.send(msg);
         //session.endDialog(msg);
+        session.send("[Provide details of how to setup personal account](http://chs.ey.net/servlet/CHSRenderingServlet?contentlD=CT-BB).");
         session.beginDialog('/waitforaccount');
     }
 ]);
@@ -1319,7 +1336,7 @@ bot.dialog('/chargecodequestions', [
                    //     builder.ReceiptItem.create(session, "$22.00", "Space Needle").image(builder.CardImage.create(session, "https://upload.wikimedia.org/wikipedia/commons/7/7c/Seattlenighttimequeenanne.jpg"))
                     ])
                     .facts([
-                        builder.Fact.create(session, "SR1234567898", "Ticket Number"),
+                    //    builder.Fact.create(session, "SR1234567898", "Ticket Number"),
                         builder.Fact.create(session, "" + session.userData.email + "", "Email Address"),
                        
                         builder.Fact.create(session, "" + session.userData.phonenumber + "", "Phone Number"),
@@ -1356,13 +1373,13 @@ bot.dialog('/ticketsubmit', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("Would you like to submit this information now?")
+                    .text("Would you like to submit this information now or re-enter the information?")
                     
                     .buttons([
                         //builder.CardAction.dialogAction(session, "ticketcomplete", null, "Yes"),
-                        builder.CardAction.dialogAction(session, "sendemail", null, "Yes"),
+                        builder.CardAction.dialogAction(session, "sendemail", null, "Submit"),
                         
-                        builder.CardAction.dialogAction(session, "receipt", null, "No")
+                        builder.CardAction.dialogAction(session, "chargecodequestions", null, "Re-enter Information")
                     ])
             ]);
         session.send(msg);
@@ -1413,7 +1430,7 @@ bot.beginDialogAction('sendemail', '/sendemail');
 bot.dialog('/acrachargecodequestions', [
     function (session) {
         //session.send("Good choice! You'll soon be able to access Questnet reports directly.  I just need to collect 3 pieces of info from you to be able to generate a username and password.");
-        builder.Prompts.text(session, "Please specify the ACRA registration/entity number.");
+        builder.Prompts.text(session, "Please specify the ACRA registration/entity number or provide detailed info to help our researcher locate the reports you need.");
     },
     function (session, results) {
         session.send("You entered '%s'", results.response);
@@ -1437,7 +1454,7 @@ bot.dialog('/acrachargecodequestions', [
                    //     builder.ReceiptItem.create(session, "$22.00", "Space Needle").image(builder.CardImage.create(session, "https://upload.wikimedia.org/wikipedia/commons/7/7c/Seattlenighttimequeenanne.jpg"))
                     ])
                     .facts([
-                        builder.Fact.create(session, "SR1234567898", "Ticket Number"),
+                       // builder.Fact.create(session, "SR1234567898", "Ticket Number"),
                         builder.Fact.create(session, "" + session.userData.acraregistration + "", " ACRA Registration Number"),
                        
                         builder.Fact.create(session, "" + session.userData.acrachargecode + "", "Charge Code")
@@ -1466,7 +1483,7 @@ bot.dialog('/acraticketsubmit', [
     
     
     function (session) {
-        session.send("These requests are handled by a researcher who is located in Sydney, Monday-Wednesday 9:00am-3:30pm and Thursday before 11:30am if your query is more urgent please contact Knowledge Help quoting message urgent-questnet-bot.");
+        session.send("These requests are handled Monday-Wednesday 9:00am-3:30pm and Thursday 09:00- 11:30am (Sydney time). If your query is urgent and outside of these times please contact Knowledge Help quoting message ‘urgent-questnet-bot’.");
 //		builder.Prompts.choice(session, "How may I help you?", "ticket|cards|carousel|receipt|actions|(quit)");
 
         var msg = new builder.Message(session)
@@ -1474,7 +1491,7 @@ bot.dialog('/acraticketsubmit', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("Has your issue been resolved?")
+                    .text("Have I resolved your issue?")
                     
                     .buttons([
                         //builder.CardAction.dialogAction(session, "ticketcomplete", null, "Yes"),
@@ -1499,7 +1516,7 @@ bot.beginDialogAction('acrasuccess', '/acrasuccess');
 
 bot.dialog('/acrafailure', [
     function (session) {
-        session.endDialog("Failure!");
+        session.endDialog("I'm sorry I've not been able to help.  You might find our [Questnet user manual]( http://chs.iweb.ey.com/GLOBAL1/CKR/CLDCKR.NSF/646309c4a5106dcc8525710800779429/46fea6ce1b59ac1986257c9300551609?OpenDocumentContact) helpful or your local [Knowledge Help Team](http://chs.ey.net/knowledgehelp) will be happy to assist you.");
     }
 ]);
 bot.beginDialogAction('acrafailure', '/acrafailure'); 
@@ -1542,7 +1559,7 @@ bot.dialog('/waitforaccount', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("Has your issue been resolved?")
+                    .text("Have I resolved your issue?")
                     
                     .buttons([
                         //builder.CardAction.dialogAction(session, "ticketcomplete", null, "Yes"),
@@ -1560,7 +1577,7 @@ bot.beginDialogAction('waitforaccount', '/waitforaccount');   // <-- no 'matches
 
 bot.dialog('/waitsuccess', [
     function (session) {
-        session.endDialog("Success!");
+        session.endDialog("Great, can I help you with anything else?");
     }
 ]);
 bot.beginDialogAction('waitsuccess', '/waitsuccess'); 
@@ -1568,7 +1585,7 @@ bot.beginDialogAction('waitsuccess', '/waitsuccess');
 bot.dialog('/waitfailure', [
     function (session) {
 
-        session.endDialog("I'm sorry I've not been able to help.  You might find our Questnet user manual helpful or your local Knowledge Help Team will be happy to assist you.");
+        session.endDialog("I'm sorry I've not been able to help.  You might find our [Questnet user manual]( http://chs.iweb.ey.com/GLOBAL1/CKR/CLDCKR.NSF/646309c4a5106dcc8525710800779429/46fea6ce1b59ac1986257c9300551609?OpenDocumentContact) helpful or your local Knowledge Help Team will be happy to assist you.");
     }
 ]);
 bot.beginDialogAction('waitfailure', '/waitfailure'); 
