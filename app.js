@@ -3,7 +3,7 @@ var _ = require('lodash');
 var builder = require('botbuilder');
 var restify = require('restify');
 
-var nodemailer = require('nodemailer');
+//var nodemailer = require('nodemailer');
 
  
 // Setup Restify Server
@@ -369,8 +369,7 @@ bot.dialog('/completiondiploma', [
                 msg.addAttachment(attachment);    
             });
             session.send(msg);
-        },
-        function (session) {
+       
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -399,26 +398,27 @@ bot.beginDialogAction('completiondiploma', '/completiondiploma');
 
 bot.dialog('/noid', [
     function (session) {
-     //   session.send("Good choice! You'll soon be able to access Questnet reports directly.  I just need to collect 3 pieces of info from you to be able to generate a username and password.");
+        session.send("If for any reason you can't provide a request ID please share either the GFIS engagement number/code or Client Name and Engagement Name.");
         builder.Prompts.text(session, "Please enter your EY email address.");
     },
     
 
     function (session, results) {
-  //      session.send("You can send a receipts for purchased good with both images and without...");
-        session.send("You entered '%s'", results.response);
+  
         session.userData.email = results.response;
+        
+        
         var msg = new builder.Message(session)
             .attachments([
                 new builder.ReceiptCard(session)
                     .title("EY Delivers Request")
-                    //.items([
+                    .items([
                    //     builder.ReceiptItem.create(session, "$22.00", "Screen shot").image(builder.CardImage.create(session, "https://upload.wikimedia.org/wikipedia/commons/a/a0/Night_Exterior_EMP.jpg"))
                    //     builder.ReceiptItem.create(session, "$22.00", "Space Needle").image(builder.CardImage.create(session, "https://upload.wikimedia.org/wikipedia/commons/7/7c/Seattlenighttimequeenanne.jpg"))
-                  //  ])
+                    ])
                     .facts([
                         
-                      //  builder.Fact.create(session, "" + session.userData.requestid + "", "Request ID"),
+                        
                         builder.Fact.create(session, "" + session.userData.email + "", "Email Address")
                                                
                     ])
@@ -426,8 +426,6 @@ bot.dialog('/noid', [
             ]);
         session.send(msg);
         session.beginDialog('/requestsubmit');
-
-        
         
     }
 
@@ -446,12 +444,12 @@ bot.dialog('/yesid', [
         builder.Prompts.number(session, "Please enter the request ID.");
     },
     function (session, results) {
-        session.send("You entered '%s'", results.response);
+    //    session.send("You entered '%s'", results.response);
         session.userData.requestid = results.response;
         builder.Prompts.text(session, "And what is your EY email address?");
     },
     function (session, results) {
-        session.send("You entered '%s'", results.response);
+    //    session.send("You entered '%s'", results.response);
         session.userData.email = results.response;
         
    
@@ -460,10 +458,10 @@ bot.dialog('/yesid', [
             .attachments([
                 new builder.ReceiptCard(session)
                     .title("EY Delivers Request")
-                    //.items([
+                    .items([
                    //     builder.ReceiptItem.create(session, "$22.00", "Screen shot").image(builder.CardImage.create(session, "https://upload.wikimedia.org/wikipedia/commons/a/a0/Night_Exterior_EMP.jpg"))
                    //     builder.ReceiptItem.create(session, "$22.00", "Space Needle").image(builder.CardImage.create(session, "https://upload.wikimedia.org/wikipedia/commons/7/7c/Seattlenighttimequeenanne.jpg"))
-                  //  ])
+                    ])
                     .facts([
                         
                         builder.Fact.create(session, "" + session.userData.requestid + "", "Request ID"),
@@ -549,13 +547,13 @@ bot.dialog('/sorrymessage', [
 
         
         
-        session.endDialog(msg);
+        
     }
 ]);
 bot.beginDialogAction('sorrymessage', '/sorrymessage');
 
 
-bot.dialog('/"endhelp', [
+bot.dialog('/endhelp', [
     
     function (session) {
         var msg = new builder.Message(session)
@@ -575,7 +573,7 @@ bot.dialog('/"endhelp', [
         session.send(msg);
     }
 ]);
-bot.beginDialogAction('"endhelp', '/"endhelp');
+bot.beginDialogAction('endhelp', '/endhelp');
 
 
 
@@ -1071,9 +1069,11 @@ bot.dialog('/I am receiving an error message', [
     function (session) {
 
         session.send("Does you error message match any of these?");
+        session.send("Test 1 \n Test 2 \n Test 3 \n");
         session.send("[Your client does not support opening this list with Windows Explorer.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Secure Proxy Server -Error Report.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Page cannot be displayed.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Unable to submit Request and Tracking Site (RTS) form to request a site.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Error occured. Access denied.  You do not have permission to perform this action or access this resource](https://ey.service-now.com/kb_view.do?sysparm_article=KB0090786)");
 
-       session.beginDialog('yeskb');
+      // session.beginDialog('yeskb');
+      session.beginDialog('/yeskb');
     }
 ]);
 bot.beginDialogAction('I am receiving an error message', '/I am receiving an error message'); 
@@ -1169,7 +1169,39 @@ bot.dialog('/I would like some help using EY Delivers', [
 
 ]);
  
-
+// Azure Search provider
+var AzureSearch = require('SearchProviders/azure-search');
+//var azureSearchClient = AzureSearch.create('searchqna2', '1EA0B804219EEC0AEF8A4FF113A3461B', 'qna-index');
+var azureSearchClient = AzureSearch.create('searchqna2', '3771FE62C21D964C86D9B4832A1B5D9B', 'qna-index');
+ 
+/// <reference path="../SearchDialogLibrary/index.d.ts" />
+var SearchDialogLibrary = require('SearchDialogLibrary');
+ 
+// RealState Search
+var searchqna1ResultsMapper = SearchDialogLibrary.defaultResultsMapper(searchqna1ToSearchHit);
+var searchqna1 = SearchDialogLibrary.create('searchqna2', {
+    multipleSelection: true,
+    search: (query) => azureSearchClient.search(query).then(searchqna1ResultsMapper),
+    refiners: ['category'],
+    refineFormatter: (refiners) =>
+        _.zipObject(
+            refiners.map(r => 'By ' + _.capitalize(r)),
+            refiners)
+});
+ 
+bot.library(searchqna1);
+ 
+// Maps the AzureSearch RealState Document into a SearchHit that the Search Library can use
+function searchqna1ToSearchHit(searchqna1) {
+    return {
+        key: searchqna1.id,
+        title: util.format('Question - %s.',
+            searchqna1.question),
+        description: searchqna1.answer
+        //,
+        //imageUrl: realstate.thumbnail
+    };
+}
 
 
 
