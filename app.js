@@ -496,13 +496,13 @@ bot.dialog('/requestsubmit', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("Would you like to submit this information now?")
+                    .text("Would you like to submit this information now or re-enter the information?")
                     
                     .buttons([
                         //builder.CardAction.dialogAction(session, "ticketcomplete", null, "Yes"),
-                        builder.CardAction.dialogAction(session, "sendemailrequest", null, "Yes"),
+                        builder.CardAction.dialogAction(session, "sendemailrequest", null, "Submit"),
                         
-                        builder.CardAction.dialogAction(session, "completiondiploma", null, "No")
+                        builder.CardAction.dialogAction(session, "completiondiploma", null, "Re-enter information")
                     ])
             ]);
         session.send(msg);
@@ -670,7 +670,7 @@ bot.beginDialogAction('existingsitefailure', '/existingsitefailure');
 bot.dialog('/newsite', [
     
     function (session) {
-        session.send("New sites can be requested using the [EYDelivers Request & Tracking site](https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/) (we have a quick reference guide available [here](https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/)). As EYDelivers sites can be made available to clients and third parties sites it’s important they’re managed by a trained member of the Engagement Team (called an Engagement Administrator). A site can’t be created until the [Engagement Administrators](newsitemessage2) listed on the request have completed the mandatory eLearning.");
+        session.send("New sites can be requested using the [EYDelivers Request & Tracking site](https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/) (we have a quick reference guide available [here](https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/)). As EYDelivers sites can be made available to clients and third parties sites it’s important they’re managed by a trained member of the Engagement Team (called an Engagement Administrator). A site can’t be created until the Engagement Administrators listed on the request have completed the mandatory eLearning.");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -726,7 +726,7 @@ bot.dialog('/requestreferenceguide', [
     
     function (session) {
 
-        session.send("You may like to review our [Request an EYD site quick reference guide](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087)");
+        session.send("You may like to review our [Request an EYD site quick reference guide](http://chs.iweb.ey.com/GLOBAL/CKR/ASIAPACEXTLCONTENTCKR.NSF/ff9ebbe29791239e85257138005b75d9/a31e051d99a604c8c12579aa003f7f54/$FILE/Request%20an%20EYD%20site.V3.0.pdf)");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -989,7 +989,7 @@ bot.beginDialogAction('sendaccessrequest', '/sendaccessrequest');
 
 bot.dialog('/eyemployee', [
     function (session) {
-        session.send("Please contact your Engagment Administrator to arrange access. You will find the Engament Administrators names on the site's Engagement Form, which you can open by clicking on the engagement name in Request & Tracking Site (RTS) Active Engagements view. From your EYDelivers site you can also find the contacts via the Ressources link under Eng. & Project Admin.");
+        session.send("Please contact your Engagment Administrator to arrange access. You will find the Engament Administrators names on the site's Engagement Form, which you can open by clicking on the engagement name in [Request & Tracking Site (RTS)](https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/) Active Engagements view. From your EYDelivers site you can also find the contacts via the Ressources link under Eng. & Project Admin.");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -1038,7 +1038,7 @@ bot.beginDialogAction('accessrequestsuccess', '/accessrequestsuccess');
 bot.dialog('/accessrequestfailure', [
     function (session) {
 
-        session.send("I'm sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our EYD tools page or you may like to contact the Client Portal Helpesk or your Engagment Admin.");
+        session.send("I'm sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our [EYD tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087Request) or you may like to contact the [Client Portal Helpesk](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagment Admin.");
        // session.send("Access Request Failure.");
 
     }   
@@ -1069,7 +1069,7 @@ bot.dialog('/I am receiving an error message', [
     function (session) {
 
         session.send("Does you error message match any of these?");
-        session.send("Test 1 \n Test 2 \n Test 3 \n");
+      //  session.send("Test 1 \n Test 2 \n Test 3 \n");
         session.send("[Your client does not support opening this list with Windows Explorer.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Secure Proxy Server -Error Report.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Page cannot be displayed.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Unable to submit Request and Tracking Site (RTS) form to request a site.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Error occured. Access denied.  You do not have permission to perform this action or access this resource](https://ey.service-now.com/kb_view.do?sysparm_article=KB0090786)");
 
       // session.beginDialog('yeskb');
@@ -1387,7 +1387,7 @@ bot.dialog('/creditcard', [
 //            ]);
 //        session.send(msg);
         //session.endDialog(msg);
-        session.send("[Provide details of how to setup personal account](http://chs.ey.net/servlet/CHSRenderingServlet?contentlD=CT-BB).");
+        session.send("Please click [here](http://chs.ey.net/servlet/CHSRenderingServlet?contentlD=CT-BB) for step-by-step details on how to purchase Questnet reports.");
         session.beginDialog('/waitforaccount');
     }
 ]);
@@ -1689,7 +1689,7 @@ bot.beginDialogAction('acrasuccess', '/acrasuccess');
 
 bot.dialog('/acrafailure', [
     function (session) {
-        session.endDialog("I'm sorry I've not been able to help.  You might find our [Questnet user manual]( http://chs.iweb.ey.com/GLOBAL1/CKR/CLDCKR.NSF/646309c4a5106dcc8525710800779429/46fea6ce1b59ac1986257c9300551609?OpenDocumentContact) helpful or your local [Knowledge Help Team](http://chs.ey.net/knowledgehelp) will be happy to assist you.");
+        session.endDialog("I'm sorry I've not been able to help.  You might find our [Questnet user manual]( http://chs.iweb.ey.com/GLOBAL1/CKR/CLDCKR.NSF/646309c4a5106dcc8525710800779429/46fea6ce1b59ac1986257c9300551609?OpenDocument) helpful or your local [Knowledge Help Team](http://chs.ey.net/knowledgehelp) will be happy to assist you.");
     }
 ]);
 bot.beginDialogAction('acrafailure', '/acrafailure'); 
@@ -1781,7 +1781,7 @@ bot.beginDialogAction('waitsuccess', '/waitsuccess');   // <-- no 'matches' opti
 bot.dialog('/waitfailure', [
     function (session) {
 
-        session.endDialog("I'm sorry I've not been able to help.  You might find our [Questnet user manual]( http://chs.iweb.ey.com/GLOBAL1/CKR/CLDCKR.NSF/646309c4a5106dcc8525710800779429/46fea6ce1b59ac1986257c9300551609?OpenDocumentContact) helpful or your local [Knowledge Help Team](http://chs.ey.net/knowledgehelp) will be happy to assist you.");
+        session.endDialog("I'm sorry I've not been able to help.  You might find our [Questnet user manual]( http://chs.iweb.ey.com/GLOBAL1/CKR/CLDCKR.NSF/646309c4a5106dcc8525710800779429/46fea6ce1b59ac1986257c9300551609?OpenDocument) helpful or your local [Knowledge Help Team](http://chs.ey.net/knowledgehelp) will be happy to assist you.");
     }
 ]);
 bot.beginDialogAction('waitfailure', '/waitfailure'); 
