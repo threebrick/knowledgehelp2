@@ -1408,7 +1408,7 @@ bot.dialog('/sendemail', [
         
     //},
     function (session) {
-        session.send("Please note it can take between one and three days to receive your username and password.  If you don't yet have your own login details and your request is urgent EY Knowledge can still find reports for you until it arrives.");
+        session.send("Please note it can take up to 3 days to receive your username and password.  If you don't yet have your own login details and your request is urgent EY Knowledge can still find reports for you until it arrives.");
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
             .attachments([
@@ -1417,7 +1417,7 @@ bot.dialog('/sendemail', [
                     .text("Would you like to wait for your account or is your request urgent?")
                     
                     .buttons([
-                        builder.CardAction.dialogAction(session, "acrachargecodequestions", null, "Urgent"),
+                        builder.CardAction.dialogAction(session, "urgentacrachargecodequestions", null, "Urgent"),
                         
                         builder.CardAction.dialogAction(session, "waitforaccount", null, "Wait")
                     ])
@@ -1427,6 +1427,15 @@ bot.dialog('/sendemail', [
     }
 ]);
 bot.beginDialogAction('sendemail', '/sendemail');
+
+bot.dialog('/urgentacrachargecodequestions', [
+    function (session) {
+        session.send("Please provde a few details to help us locate the documents you need while you wait for the vendor to set up your license.");
+        session.beginDialog('/acrachargecodequestions');
+    }
+    
+]);
+bot.beginDialogAction('urgentacrachargecodequestions', '/urgentacrachargecodequestions');
 
 
 
@@ -1550,7 +1559,22 @@ bot.beginDialogAction('acraticketsubmit', '/acraticketsubmit');   // <-- no 'mat
 
 bot.dialog('/acrasuccess', [
     function (session) {
-        session.endDialog("Success!");
+        //session.send("Please note it can take up to 3 days to receive your username and password.  If you don't yet have your own login details and your request is urgent EY Knowledge can still find reports for you until it arrives.");
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    
+                    .text("Great, can I help you with anything else?")
+                    
+                    .buttons([
+                        builder.CardAction.dialogAction(session, "menu", null, "Yes"),
+                        
+                        builder.CardAction.dialogAction(session, "goodbye", null, "No")
+                    ])
+            ]);
+        session.send(msg);
+        //session.endDialog(msg);
     }
 ]);
 bot.beginDialogAction('acrasuccess', '/acrasuccess'); 
@@ -1572,7 +1596,7 @@ bot.dialog('/acraticketcomplete', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("")
+                    .text("This should not be here - error")
                     
                     .buttons([
                         //builder.CardAction.dialogAction(session, "ticketcomplete", null, "Yes"),
@@ -1617,11 +1641,34 @@ bot.dialog('/waitforaccount', [
 bot.beginDialogAction('waitforaccount', '/waitforaccount');   // <-- no 'matches' option means this can only be triggered by a button.
 
 bot.dialog('/waitsuccess', [
+    
+    
     function (session) {
-        session.endDialog("Great, can I help you with anything else?");
+        //session.send("These requests are handled by a researcher who is located in Sydney, Monday-Wednesday 9:00am-3:30pm and Thursday before 11:30am if your query is more urgent please contact Knowledge Help quoting message urgent-questnet-bot.");
+//		builder.Prompts.choice(session, "How may I help you?", "ticket|cards|carousel|receipt|actions|(quit)");
+
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    
+                    .text("Great, can I help you with anything else?")
+                    
+                    .buttons([
+                        //builder.CardAction.dialogAction(session, "ticketcomplete", null, "Yes"),
+                        builder.CardAction.dialogAction(session, "menu", null, "Yes"),
+                        
+                        builder.CardAction.dialogAction(session, "goodbye", null, "No")
+                    ])
+            ]);
+        session.send(msg);
+        //session.endDialog(msg);
     }
+    
 ]);
-bot.beginDialogAction('waitsuccess', '/waitsuccess'); 
+bot.beginDialogAction('waitsuccess', '/waitsuccess');   // <-- no 'matches' option means this can only be triggered by a button.
+
+
 
 bot.dialog('/waitfailure', [
     function (session) {
