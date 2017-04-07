@@ -44,6 +44,7 @@ server.post('https://knowledgehelp2.azurewebsites.net/api/messages', connector.l
 
 bot.endConversationAction('goodbye', 'Goodbye :)', { matches: /^goodbye/i });
 bot.beginDialogAction('help', '/help', { matches: /^help/i });
+bot.beginDialogAction('menu', '/menu', { matches: /^menu|show menu|main menu/i });
 
 //=========================================================
 // Bots Dialogs
@@ -593,7 +594,7 @@ bot.dialog('/notcompletedelearning', [
     
     function (session) {
 
-        session.send("An Engagement Administrator (EA) is a “super-user” of the engagement who has completed mandatory eLearning. An EA has full access to everything in the engagement, has special admin only rights and is the first point of contact for usage questions by team members. It is recommended to have at least two EAs identified for each engagement.");
+        session.send("Your EYDeliverssite should be available within 24 hours Of requesting it if all the listed Engagment Administrators have taken and passed the EYDelivers for [Engagement Administrators eLearning](https://eyfs.intellinex.com/eysso/sso_login.aspx?DeepLinkKey=569f6d4f-882a-41bc-81f9-0a871f2c999) at least 48hours before initiating the request for a new site. You can obtain a status update on your EYDelivers siterequest by contacting [Client Portal Helpdesk]( http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2).");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -652,7 +653,8 @@ bot.dialog('/existingsitefailure', [
     
     function (session) {
 
-        session.send("Sorry that I’ve not been able to answer your question here. There is more comprehensive support on our [EYDelivers tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087Request) or you may like to contact your local [Knowledge Help team](http://chs.ey.net/knowledgehelpContact) or ask your question in the [EYD/WPP Yammer group](https://www.yammer.com/ey.com/#/threads/inGroup?type=in_group&feedId=2770414EYD)");
+      //  session.send("Sorry that I’ve not been able to answer your question here. There is more comprehensive support on our [EYDelivers tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087Request) or you may like to contact your local [Knowledge Help team](http://chs.ey.net/knowledgehelpContact) or ask your question in the [EYD/WPP Yammer group](https://www.yammer.com/ey.com/#/threads/inGroup?type=in_group&feedId=2770414EYD)");
+      session.send("I'm sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our [EYDelivers tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087Request) or you may like to contact the [Client Portal Helpdesk](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) (part of IT Services) by phone or email");
 
         
     }
@@ -736,7 +738,7 @@ bot.dialog('/requestreferenceguide', [
                     .text("Does this help?")
                     
                     .buttons([
-                        builder.CardAction.dialogAction(session, "newsiterequestsuccess", null, "Yes"),
+                        builder.CardAction.dialogAction(session, "exisitngsiterequestsuccess", null, "Yes"),
                         
                         builder.CardAction.dialogAction(session, "newsitefailure", null, "No")
                     ])
