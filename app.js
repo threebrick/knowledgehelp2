@@ -1421,12 +1421,12 @@ bot.dialog('/chargecodequestions', [
         builder.Prompts.text(session, "Please enter your EY email address.");
     },
     function (session, results) {
-        session.send("You entered '%s'", results.response);
+     //   session.send("You entered '%s'", results.response);
         session.userData.email = results.response;
         builder.Prompts.text(session, "And what is your contact number?");
     },
     function (session, results) {
-        session.send("You entered '%s'", results.response);
+    //    session.send("You entered '%s'", results.response);
         session.userData.phonenumber = results.response;
         builder.Prompts.text(session, "Lastly, please enter your charge code (Questnet charges a variable fee based on the type of report that is downloaded).");
         //session.beginDialog('/sendemail');
@@ -1435,7 +1435,7 @@ bot.dialog('/chargecodequestions', [
 
     function (session, results) {
   //      session.send("You can send a receipts for purchased good with both images and without...");
-        session.send("You entered '%s'", results.response);
+  //      session.send("You entered '%s'", results.response);
         session.userData.chargecode = results.response;
         // Send a receipt with images
         var msg = new builder.Message(session)
@@ -1553,12 +1553,12 @@ bot.dialog('/acrachargecodequestions', [
         builder.Prompts.text(session, "Please provide a Singapore/Malaysia charge code.");
     },
     function (session, results) {
-        session.send("You entered '%s'", results.response);
+   //     session.send("You entered '%s'", results.response);
         session.userData.singmachargecode = results.response;
         builder.Prompts.text(session, "Please specify the ACRA registration/entity number or provide detailed info to help our researcher locate the reports you need.");
     },
     function (session, results) {
-        session.send("You entered '%s'", results.response);
+    //    session.send("You entered '%s'", results.response);
         session.userData.acraregistration = results.response;
        
         //session.userData.acrachargecode = results.response;
