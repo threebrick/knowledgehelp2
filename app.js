@@ -1,5 +1,5 @@
-//var util = require('util');
-//var _ = require('lodash');
+var util = require('util');
+var _ = require('lodash');
 var builder = require('botbuilder');
 var restify = require('restify');
 
@@ -341,7 +341,7 @@ bot.dialog('/completedelearning', [
                     .buttons([
                         builder.CardAction.dialogAction(session, "completiondiploma", null, "Yes"),
                         
-                        builder.CardAction.dialogAction(session, "existingsitefailure", null, "No")
+                        builder.CardAction.dialogAction(session, "menu", null, "No")
                     ])
                         
                         
@@ -359,7 +359,17 @@ bot.dialog('/completiondiploma', [
     
     function (session) {
 
-        session.send("First let's retrieve your ‘Completion Diploma’ once you have passed the eLearning:\n\n* Go back in EYLeads to the Activity Details page for EYDelivers for Engagement Administrators \n* Scroll down in the lesson description November 2016 EYD V3.0EYDelivers: Request an EYD site QRG \n* Click on the diploma icon \n* Make a print screen of the diploma");
+        builder.Prompts.attachment(session, "First let's retrieve your ‘Completion Diploma’ once you have passed the eLearning:\n\n* Go back in EYLeads to the Activity Details page for EYDelivers for Engagement Administrators \n* Scroll down in the lesson description November 2016 EYD V3.0EYDelivers: Request an EYD site QRG \n* Click on the diploma icon \n* Make a print screen of the diploma");
+        },
+        function (session, results) {
+            var msg = new builder.Message(session)
+                .ntext("I got %d attachment.", "I got %d attachments.", results.response.length);
+            results.response.forEach(function (attachment) {
+                msg.addAttachment(attachment);    
+            });
+            session.send(msg);
+        },
+        function (session) {
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -509,11 +519,62 @@ bot.beginDialogAction('requestsubmit', '/requestsubmit');   // <-- no 'matches' 
 bot.dialog('/sendemailrequest', [
     
     function (session) {
-        session.send("Send email containing info to test address (eyknowledgehelpsurvey@ey.com)");
-        
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    
+                    .text("Does this help?")
+                    
+                    .buttons([
+                        //builder.CardAction.dialogAction(session, "ticketcomplete", null, "Yes"),
+                        builder.CardAction.dialogAction(session, "endhelp", null, "Yes"),
+                        
+                        builder.CardAction.dialogAction(session, "sorrymessage", null, "No")
+                    ])
+            ]);
+        session.send(msg);
     }
 ]);
 bot.beginDialogAction('sendemailrequest', '/sendemailrequest');
+
+
+
+bot.dialog('/sorrymessage', [
+    
+    function (session) {
+
+        session.send("Sorry that I've not been able to answer your question here, however this is more comprehensive support on our [EYD tools page]((http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087Request) or you may like to contact the [Client Portal Helpdesk]( http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagement Admin.");
+
+        
+        
+        session.endDialog(msg);
+    }
+]);
+bot.beginDialogAction('sorrymessage', '/sorrymessage');
+
+
+bot.dialog('/"endhelp', [
+    
+    function (session) {
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    
+                    .text("Great, can I help you with anything else?")
+                    
+                    .buttons([
+                        //builder.CardAction.dialogAction(session, "ticketcomplete", null, "Yes"),
+                        builder.CardAction.dialogAction(session, "menu", null, "Yes"),
+                        
+                        builder.CardAction.dialogAction(session, "goodbye", null, "No")
+                    ])
+            ]);
+        session.send(msg);
+    }
+]);
+bot.beginDialogAction('"endhelp', '/"endhelp');
 
 
 
@@ -561,18 +622,37 @@ bot.dialog('/exisitngsiterequestsuccess', [
     
     function (session) {
 
-        session.send("New site request success!");
+       
 
-        
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    
+                    .text("Great, can I help you with anything else?")
+                    
+                    .buttons([
+                        builder.CardAction.dialogAction(session, "menu", null, "Yes"),
+                        
+                        builder.CardAction.dialogAction(session, "goodbye", null, "No")
+                    ])
+                        
+                        
+                    
+            ]);
+        session.send(msg);
+        //session.endDialog(msg);
     }
 ]);
 bot.beginDialogAction('exisitngsiterequestsuccess', '/exisitngsiterequestsuccess');
+
+
 
 bot.dialog('/existingsitefailure', [
     
     function (session) {
 
-        session.send("Sorry that I’ve not been able to answer your question here. There is more comprehensive support on our EYDelivers tools page or you may like to contact your local Knowledge Help team(see links) or ask your question in the EYD/WPP Yammer group");
+        session.send("Sorry that I’ve not been able to answer your question here. There is more comprehensive support on our [EYDelivers tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087Request) or you may like to contact your local [Knowledge Help team](http://chs.ey.net/knowledgehelpContact) or ask your question in the [EYD/WPP Yammer group](https://www.yammer.com/ey.com/#/threads/inGroup?type=in_group&feedId=2770414EYD)");
 
         
     }
@@ -590,7 +670,7 @@ bot.beginDialogAction('existingsitefailure', '/existingsitefailure');
 bot.dialog('/newsite', [
     
     function (session) {
-        session.send("New sites can be requested using the [EYDelivers Request & Tracking site](https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/) (we have a quick reference guide available [here](https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/)). As EYDelivers sites can be made available to clients and third parties sites it’s important they’re managed by a trained member of the Engagement Team (called an Engagement Administrator). A site can’t be created until the Engagement Administrators listed on the request have completed the mandatory eLearningand achieve a passing score of 70%.");
+        session.send("New sites can be requested using the [EYDelivers Request & Tracking site](https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/) (we have a quick reference guide available [here](https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/)). As EYDelivers sites can be made available to clients and third parties sites it’s important they’re managed by a trained member of the Engagement Team (called an Engagement Administrator). A site can’t be created until the [Engagement Administrators](newsitemessage2) listed on the request have completed the mandatory eLearning.");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -754,7 +834,7 @@ bot.beginDialogAction('externalclient', '/externalclient');
 
 bot.dialog('/multiplepeople', [
     function (session) {
-        session.send("If you are requesting access for multiple users, complete this Excel formand send it to Client Portal Helpdesk clientportal@ey.com. \nhttp://chas.ey.net/GLOBAL/CKR/ASIAPACEXTLCONTENTCKR.NSF/ff9ebbe29791239e85257138005b75d9/a31e051d99a604c8c12579aa003f7f54/$FILE/EYD%20Bulk%20Upload%20Form_client%20portal.xlsx");
+        session.send("If you are requesting access for multiple users, complete this [Excel form](http://chas.ey.net/GLOBAL/CKR/ASIAPACEXTLCONTENTCKR.NSF/ff9ebbe29791239e85257138005b75d9/a31e051d99a604c8c12579aa003f7f54/$FILE/EYD%20Bulk%20Upload%20Form_client%20portal.xlsx) and send it to Client Portal Helpdesk clientportal@ey.com. \n");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -778,8 +858,8 @@ bot.beginDialogAction('multiplepeople', '/multiplepeople');
 bot.dialog('/accessrequestfailure2', [
     function (session) {
 
-       // session.send("Sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our EYD tools page or you may like to contact the Client Portal Helpesk or your Engagment Admin.");
-        session.send("Access Request Failure.");
+        session.send("Sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our EYD tools page or you may like to contact the Client Portal Helpesk or your Engagment Admin.");
+        //session.send("Access Request Failure.");
 
     }   
 ]);
@@ -794,36 +874,36 @@ bot.dialog('/oneperson', [
         builder.Prompts.text(session, "Please enter the client company name (or EY if you are staff)");
     },
     function (session, results) {
-        session.send("You entered '%s'", results.response);
+        //session.send("You entered '%s'", results.response);
         session.userData.companyname = results.response;
-        builder.Prompts.text(session, "And what is your full name?");
+        builder.Prompts.text(session, "Client/third party's full name (including title - Mr/Ms etc.)?");
     },
     function (session, results) {
-        session.send("You entered '%s'", results.response);
+        //session.send("You entered '%s'", results.response);
         session.userData.name = results.response;
-        builder.Prompts.text(session, "What is your full external email address?");
+        builder.Prompts.text(session, "Client/third party's full external email address?");
         
     },
     function (session, results) {
-        session.send("You entered '%s'", results.response);
+        //session.send("You entered '%s'", results.response);
         session.userData.email = results.response;
-        builder.Prompts.text(session, "What is your job title?");
+        builder.Prompts.text(session, "Client/third party's job title?");
     },
     function (session, results) {
-        session.send("You entered '%s'", results.response);
+        //session.send("You entered '%s'", results.response);
         session.userData.jobtitle = results.response;
-        builder.Prompts.number(session, "What is your contact number?");
+        builder.Prompts.number(session, "Client/third party's telephone number?");
         
     },
     function (session, results) {
-        session.send("You entered '%s'", results.response);
+        //session.send("You entered '%s'", results.response);
         session.userData.contactnumber = results.response;
         builder.Prompts.text(session, "Finally, please enter the content/tools required (eg eRoom, EYDelivers)");
     },
     
     function (session, results) {
   //      session.send("You can send a receipts for purchased good with both images and without...");
-        session.send("You entered '%s'", results.response);
+       // session.send("You entered '%s'", results.response);
         session.userData.tools = results.response;
         
         var msg = new builder.Message(session)
@@ -933,9 +1013,23 @@ bot.beginDialogAction('eyemployee', '/eyemployee');
 
 bot.dialog('/accessrequestsuccess', [
     function (session) {
-        session.send("Access Request Success.");
 
-    }   
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    
+                    .text("Great, can I help you with anything else?")
+                    
+                    .buttons([
+                        builder.CardAction.dialogAction(session, "menu", null, "Yes"),
+                        
+                        builder.CardAction.dialogAction(session, "goodbye", null, "No")
+                    ])
+            ]);
+        session.send(msg);
+        //session.endDialog(msg);
+    }
 ]);
 bot.beginDialogAction('accessrequestsuccess', '/accessrequestsuccess'); 
 
@@ -975,22 +1069,9 @@ bot.dialog('/I am receiving an error message', [
     function (session) {
 
         session.send("Does you error message match any of these?");
+        session.send("[Your client does not support opening this list with Windows Explorer.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Secure Proxy Server -Error Report.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Page cannot be displayed.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Unable to submit Request and Tracking Site (RTS) form to request a site.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Error occured. Access denied.  You do not have permission to perform this action or access this resource](https://ey.service-now.com/kb_view.do?sysparm_article=KB0090786)");
 
-        var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
-                    
-                    .text("Your client does not support opening this list with Windows Explorer. Secure Proxy Server -Error Report. Page cannot be displayed. Unable to submit Request and Tracking Site (RTS) form to request a site.")
-                    
-                    .buttons([
-                        builder.CardAction.dialogAction(session, "yeskb", null, "Yes"),
-                        
-                        builder.CardAction.dialogAction(session, "nokb", null, "No")
-                    ])
-            ]);
-        session.send(msg);
-        //session.endDialog(msg);
+       session.beginDialog('yeskb');
     }
 ]);
 bot.beginDialogAction('I am receiving an error message', '/I am receiving an error message'); 
@@ -999,7 +1080,7 @@ bot.beginDialogAction('I am receiving an error message', '/I am receiving an err
 bot.dialog('/yeskb', [
     function (session) {
 
-        session.send("View the knowledge article - https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016");
+      //  session.send("View the knowledge article - https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -1020,35 +1101,28 @@ bot.dialog('/yeskb', [
 ]);
 bot.beginDialogAction('yeskb', '/yeskb'); 
 
-bot.dialog('/nokb', [
-    function (session) {
 
-        session.send("View the knowledge article - https://ey.service-now.com/kb_view.do?sysparm_article=KB0090786");
-
-        var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
-                    
-                    .text("Does this help?")
-                    
-                    .buttons([
-                        builder.CardAction.dialogAction(session, "knownissuesuccess", null, "Yes"),
-                        
-                        builder.CardAction.dialogAction(session, "knownissuefailure", null, "No")
-                    ])
-            ]);
-        session.send(msg);
-        //session.endDialog(msg);
-    }
-]);
-bot.beginDialogAction('nokb', '/nokb'); 
 
 
 
 bot.dialog('/knownissuesuccess', [
     function (session) {
-        session.send("Access Request Success.");
+        
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    
+                    .text("Great, can I help you with anything else?")
+                    
+                    .buttons([
+                        builder.CardAction.dialogAction(session, "menu", null, "Yes"),
+                        
+                        builder.CardAction.dialogAction(session, "goodbye", null, "No")
+                    ])
+            ]);
+        session.send(msg);
+        //session.endDialog(msg);
 
     }   
 ]);
@@ -1059,7 +1133,7 @@ bot.beginDialogAction('knownissuesuccess', '/knownissuesuccess');
 bot.dialog('/knownissuefailure', [
     function (session) {
 
-        session.send("Sorry that I’ve not been able to solve your issue here, IT Services provide technical support for EYDelivers. Please call your local IT Service Desk or use the IT Self-Service portalto chat with a technician or log a ticket.");
+        session.send("Sorry that I’ve not been able to solve your issue here, IT Services provide technical support for EYDelivers. Please call your local IT Service Desk or use the [IT Self-Service portal](https://ey.service-now.com/ey/contact_it_service_desk.do) to chat with a technician or log a ticket.");
         //session.send("Access Request Failure.");
 
     }   
@@ -1075,16 +1149,16 @@ bot.beginDialogAction('knownissuefailure', '/knownissuefailure');
 // I'd like some help flow
 
 bot.dialog('/I would like some help using EY Delivers', [
-  //  function (session) {
+    function (session) {
         // Trigger Search
-  //      session.beginDialog('searchqna2:/');
-  //  },
-  //  function (session, args) {
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
         // Process selected search results
-   //     session.send(
-  //          'Done! For future reference, you bookmarked the following questions: %s',
-  //          args.selection.map(i => i.key).join(', '));
-  //  }
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
   function (session) {
 
         session.send("How may I help you?");
