@@ -1152,6 +1152,8 @@ bot.beginDialogAction('knownissuefailure', '/knownissuefailure');
 
 bot.dialog('/I would like some help using EY Delivers', [
     function (session) {
+        // Adds Product variable
+        session.userData.product = "EY Delivers";
         // Trigger Search
         session.beginDialog('searchqna2:/');
     },
