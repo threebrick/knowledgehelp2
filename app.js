@@ -1386,6 +1386,7 @@ bot.dialog('/I would like some help using EY Delivers', [
     function (session) {
         // Adds Product variable
         session.userData.product = "EY Delivers";
+        session.userData.question = null;
         // Trigger Search
         session.beginDialog('searchqna2:/');
     },
