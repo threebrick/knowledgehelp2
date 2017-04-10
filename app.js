@@ -200,6 +200,129 @@ bot.dialog('/Help using Factiva', [
 bot.beginDialogAction('Help using Factiva', '/Help using Factiva'); 
 
 
+// Factiva FAQ Search Code
+
+bot.dialog('/How do I build an effective search in Factiva', [
+    function (session) {
+        // Adds Product variable
+        session.userData.product = "Factiva";
+        session.userData.question = "How do I build an effective search in Factiva";
+        // Trigger Search
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
+    }   
+
+]);
+bot.beginDialogAction('How do I build an effective search in Factiva', '/How do I build an effective search in Factiva'); 
+
+bot.dialog('/How can I set up alerts on my client or topic', [
+    function (session) {
+        // Adds Product variable
+        session.userData.product = "Factiva";
+        session.userData.question = "How can I set up alerts on my client or topic";
+        // Trigger Search
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
+    }   
+
+]);
+bot.beginDialogAction('How can I set up alerts on my client or topic', '/How can I set up alerts on my client or topic');
+
+
+bot.dialog('/Can Factiva find company, industry or executive profiles', [
+    function (session) {
+        // Adds Product variable
+        session.userData.product = "Factiva";
+        session.userData.question = "Can Factiva find company, industry or executive profiles";
+        // Trigger Search
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
+    }   
+
+]);
+bot.beginDialogAction('Can Factiva find company, industry or executive profiles', '/Can Factiva find company, industry or executive profiles');
+
+
+bot.dialog('/How do I use Factiva quotes and charts?', [
+    function (session) {
+        // Adds Product variable
+        session.userData.product = "Factiva";
+        session.userData.question = "How do I use Factiva quotes and charts?";
+        // Trigger Search
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
+    }   
+
+]);
+bot.beginDialogAction('How do I use Factiva quotes and charts?', '/How do I use Factiva quotes and charts?');
+
+
+bot.dialog('/Does Factiva have a mobile App?', [
+    function (session) {
+        // Adds Product variable
+        session.userData.product = "Factiva";
+        session.userData.question = "Does Factiva have a mobile App?";
+        // Trigger Search
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
+    }   
+
+]);
+bot.beginDialogAction('Does Factiva have a mobile App?', '/Does Factiva have a mobile App?');
+
+// End Factiva FAQ Search Code
+
+
 
 bot.dialog('/What is Discover', [
     function (session) {
@@ -216,6 +339,115 @@ bot.dialog('/What is Discover', [
     }
 ]);
 bot.beginDialogAction('What is Discover', '/What is Discover'); 
+
+
+// Discover FAQ Search Code
+
+bot.dialog('/How can I access EY Discover?', [
+    function (session) {
+        // Adds Product variable
+        session.userData.product = "Discover";
+        session.userData.question = "How can I access EY Discover?";
+        // Trigger Search
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
+    }   
+
+]);
+bot.beginDialogAction('How can I access EY Discover?', '/How can I access EY Discover?'); 
+
+bot.dialog('/How is Discover different from the search on the EY home page?', [
+    function (session) {
+        // Adds Product variable
+        session.userData.product = "Discover";
+        session.userData.question = "How is Discover different from the search on the EY home page?";
+        // Trigger Search
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
+    }   
+
+]);
+bot.beginDialogAction('How is Discover different from the search on the EY home page?', '/How is Discover different from the search on the EY home page?');
+
+
+bot.dialog('/How can I contribute to Discover?', [
+    function (session) {
+        // Adds Product variable
+        session.userData.product = "Discover";
+        session.userData.question = "How can I contribute to Discover?";
+        // Trigger Search
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
+    }   
+
+]);
+bot.beginDialogAction('How can I contribute to Discover?', '/How can I contribute to Discover?');
+
+
+bot.dialog('/What is the best way to search for a Credential?', [
+    function (session) {
+        // Adds Product variable
+        session.userData.product = "Discover";
+        session.userData.question = "What is the best way to search for a Credential?";
+        // Trigger Search
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
+    }   
+
+]);
+bot.beginDialogAction('What is the best way to search for a Credential?', '/What is the best way to search for a Credential?');
+
+
+
+// End Discover FAQ Search Code
+
+
+
+
+
+
+
+
 
 bot.dialog('/Finding a research tool', [
     function (session) {
