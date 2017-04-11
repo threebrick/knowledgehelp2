@@ -75,35 +75,37 @@ bot.dialog('/', [
     }
 ]);
 
+
+const WhatOption = 'What can I ask you?';
+
 bot.dialog('/menu', [
     
-    function (session) {
+    
 
-        var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
-                    
-                    .text("How can I help you today?  (Just type your question or click the 'what can I ask you' button below)")
-                    
-                    .buttons([
-                        builder.CardAction.dialogAction(session, "initialquestions", null, "What can I ask you?")
-                        
-                //        builder.CardAction.dialogAction(session, "speaktoadvisor", null, "How can I speak to an Advisor?")
-                    ])
-            ]);
-        session.send(msg);
-        //session.endDialog(msg);
+    function (session) {
+        builder.Prompts.choice(session,
+            'How can I help you today?  (Just type your question or click the \'what can I ask you\' button below)',
+            [WhatOption],
+            { listStyle: builder.ListStyle.button });
     },
-    function (session, results) {
-        if (results.response && results.response.entity != '(quit)') {
-            // Launch demo dialog
-            session.beginDialog('/' + results.response.entity);
+    function (session, result) {
+        if (result.response) {
+            switch (result.response.entity) {
+                
+                case WhatOption:
+                    session.beginDialog('/initialquestions');
+                    break;
+                
+            }
         } else {
-            // Exit the menu
-            session.endDialog();
+            //session.send('I am sorry but I didn\'t understand that. I need you to select one of the options below');
+           // session.userData.product = "Factiva";
+            session.userData.question = results.response.entity;
+            // Trigger Search
+            session.beginDialog('searchqna2:/');
         }
     },
+    
     function (session, results) {
         // The menu runs a loop until the user chooses to (quit).
         session.replaceDialog('/menu');
