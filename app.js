@@ -95,14 +95,20 @@ bot.dialog('/menu', [
                 case WhatOption:
                     session.beginDialog('/initialquestions');
                     break;
-                
+                default:
+                    // session.userData.product = "Factiva";
+                    session.userData.question = results.response.entity;
+                    // Trigger Search
+                    session.beginDialog('searchqna2:/');
+                    break;
+
             }
         } else {
-            //session.send('I am sorry but I didn\'t understand that. I need you to select one of the options below');
+            session.send('I am sorry but I didn\'t understand that. I need you to select one of the options below');
            // session.userData.product = "Factiva";
-            session.userData.question = results.response.entity;
+           // session.userData.question = results.response.entity;
             // Trigger Search
-            session.beginDialog('searchqna2:/');
+           // session.beginDialog('searchqna2:/');
         }
     },
     
