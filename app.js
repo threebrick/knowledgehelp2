@@ -100,7 +100,7 @@ bot.dialog('/menu', [
                     session.userData.question = results.response.entity;
                     // Trigger Search
                     session.beginDialog('searchqna2:/');
-                    dialogAction
+                    
                     break;
 
             }
