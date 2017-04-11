@@ -88,7 +88,7 @@ bot.dialog('/menu', [
             [WhatOption],
             { listStyle: builder.ListStyle.button });
     },
-    function (session, result) {
+    function (session, result, next) {
         if (result.response) {
             switch (result.response.entity) {
                 
@@ -100,6 +100,7 @@ bot.dialog('/menu', [
                     session.userData.question = results.response.entity;
                     // Trigger Search
                     session.beginDialog('searchqna2:/');
+                    dialogAction
                     break;
 
             }
