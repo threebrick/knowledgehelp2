@@ -118,23 +118,17 @@ bot.dialog('/menu', [
             //session.endDialog();
             // session.userData.product = "Factiva";
             session.userData.question = results.response.entity;
-            next();
-        }
-    },
-    
-    function (session, results) {
-        // The menu runs a loop until the user chooses to (quit).
-        //session.replaceDialog('/menu');
-        
-        // Trigger Search
-        session.beginDialog('searchqna2:/');
-    }
+           // next();
 
-     // on error, start over
-     //   session.on('error', function (err) {
-     //       session.send('Failed with message: %s', err.message);
-             // Trigger Search
-     //   session.beginDialog('searchqna2:/');
+           session.on('error', function (err) {
+            session.send('Failed with message: %s', err.message);
+            session.endDialog();
+        });
+           
+        }
+    }
+    
+    
 
 ]).reloadAction('reloadMenu', null, { matches: /^menu|show menu/i });   
 
