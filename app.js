@@ -11,6 +11,16 @@ var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
+
+
+// Initialize the middleware
+var BotmetricsMiddleware = require('botmetrics-botframework-middleware').BotmetricsMiddleware({
+//  botId: process.env.BOTMETRICS_BOT_ID,
+//  apiKey: process.env.BOTMETRICS_API_KEY
+
+    botId: '87464d12c04c',
+    apiKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NjgsImV4cCI6MTgwNzQ5MTk1N30.eVQscEUJPNMhi-_h23unO8yben5uLAS5aXxBC4rDbs4'
+});
  
 // Create chat bot
 var connector = new builder.ChatConnector({
@@ -2041,8 +2051,16 @@ bot.beginDialogAction('howtohelp', '/howtohelp');
 // END Questnet FLOW 
 
 
- 
 
+// Use the botmetrics middleware
+bot.use(
+  {
+    receive: BotmetricsMiddleware.receive,
+    send: BotmetricsMiddleware.send
+  }
+);
+ 
+// end the botmetrics middleware
 
 server.get('/', restify.serveStatic({
  directory: __dirname,
