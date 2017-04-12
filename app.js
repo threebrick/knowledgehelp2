@@ -97,7 +97,7 @@ bot.dialog('/menu', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("How can I help you today?  (Just type your question or use one of the buttons below)")
+                    .text("How can I help you today? Please click the 'what can I ask you' button to get started.")
                     
                     .buttons([
                         builder.CardAction.dialogAction(session, "initialquestions", null, "What can I ask you?")
@@ -174,7 +174,7 @@ bot.dialog('/menu', [
 
 bot.dialog('/initialquestions', [
     function (session) {
-        builder.Prompts.choice(session, "What can I ask you?  Often, people ask me for help?", "Finding a research tool|Collaborating using SharePoint|Submitting knowledge|Help with EY Delivers*|Locating business info on Singapore or Malaysia companies*|Help using Factiva|What is Discover");
+        builder.Prompts.choice(session, "What can I ask you?  Often, people ask me for help?", "Finding a research tool|Collaborating using SharePoint|Submitting knowledge|Help with EY Delivers*|Locating business info on Singapore or Malaysia companies*|Help using Factiva|Help using Discover");
     },
     function (session, results) {
         if (results.response && results.response.entity != '(quit)') {
