@@ -120,12 +120,14 @@ bot.dialog('/menu', [
             session.userData.question = results.response.entity;
            // next();
 
-           session.on('error', function (err) {
+           
+           
+        }
+
+        session.on('error', function (err) {
             session.send('Failed with message: %s', err.message);
             session.endDialog();
         });
-           
-        }
     }
     
     
