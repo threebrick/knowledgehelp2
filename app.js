@@ -128,7 +128,14 @@ bot.dialog('/menu', [
         
         // Trigger Search
         session.beginDialog('searchqna2:/');
-    }
+    },
+
+     // on error, start over
+        session.on('error', function (err) {
+            session.send('Failed with message: %s', err.message);
+             // Trigger Search
+        session.beginDialog('searchqna2:/');
+})
 ]).reloadAction('reloadMenu', null, { matches: /^menu|show menu/i });   
 
  //   function (session) {
