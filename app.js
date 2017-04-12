@@ -108,7 +108,7 @@ bot.dialog('/menu', [
         session.send(msg);
         //session.endDialog(msg);
     },
-    function (session, results, next) {
+    function (session, results) {
     //    if (results.response && results.response.entity != '(quit)') {
         if (results.response.entity == 'initialquestions') {
             // Launch demo dialog
