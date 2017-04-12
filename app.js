@@ -90,44 +90,80 @@ const WhatOption = 'What can I ask you?';
 
 bot.dialog('/menu', [
     
-    
+ function (session) {
 
-    function (session) {
-        builder.Prompts.choice(session,
-            'How can I help you today?  (Just type your question or click the \'what can I ask you\' button below)',
-            [WhatOption],
-            { listStyle: builder.ListStyle.button });
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    
+                    .text("How can I help you today?  (Just type your question or use one of the buttons below)")
+                    
+                    .buttons([
+                        builder.CardAction.dialogAction(session, "initialquestions", null, "What can I ask you?")
+                        
+                //        builder.CardAction.dialogAction(session, "speaktoadvisor", null, "How can I speak to an Advisor?")
+                    ])
+            ]);
+        session.send(msg);
+        //session.endDialog(msg);
     },
-    function (session, result, next) {
-        if (result.response) {
-            switch (result.response.entity) {
-                
-                case WhatOption:
-                    session.beginDialog('/initialquestions');
-                    break;
-                default:
-                    // session.userData.product = "Factiva";
+    function (session, results) {
+    //    if (results.response && results.response.entity != '(quit)') {
+        if (results.response.entity == 'initialquestions') {
+            // Launch demo dialog
+            session.beginDialog('/' + results.response.entity);
+        } else {
+            // Exit the menu
+            //session.endDialog();
+            // session.userData.product = "Factiva";
                     session.userData.question = results.response.entity;
                     // Trigger Search
                     session.beginDialog('searchqna2:/');
-                    
-                    break;
-
-            }
-        } else {
-            session.send('I am sorry but I didn\'t understand that. I need you to select one of the options below');
-           // session.userData.product = "Factiva";
-           // session.userData.question = results.response.entity;
-            // Trigger Search
-           // session.beginDialog('searchqna2:/');
         }
     },
-    
     function (session, results) {
         // The menu runs a loop until the user chooses to (quit).
         session.replaceDialog('/menu');
     }
-]).reloadAction('reloadMenu', null, { matches: /^menu|show menu/i });
+]).reloadAction('reloadMenu', null, { matches: /^menu|show menu/i });   
+
+ //   function (session) {
+//        builder.Prompts.choice(session,
+ //           'How can I help you today?  (Just type your question or click the \'what can I ask you\' button below)',
+//            [WhatOption],
+//            { listStyle: builder.ListStyle.button });
+//    },
+//    function (session, result, next) {
+//        if (result.response) {
+//            switch (result.response.entity) {
+//                
+//                case WhatOption:
+//                    session.beginDialog('/initialquestions');
+ //                   break;
+ //               default:
+                    // session.userData.product = "Factiva";
+//                    session.userData.question = results.response.entity;
+                    // Trigger Search
+//                    session.beginDialog('searchqna2:/');
+                    
+//                    break;
+
+ //           }
+//        } else {
+//            session.send('I am sorry but I didn\'t understand that. I need you to select one of the options below');
+           // session.userData.product = "Factiva";
+           // session.userData.question = results.response.entity;
+            // Trigger Search
+           // session.beginDialog('searchqna2:/');
+//        }
+//    },
+    
+//    function (session, results) {
+        // The menu runs a loop until the user chooses to (quit).
+//        session.replaceDialog('/menu');
+//    }
+//]).reloadAction('reloadMenu', null, { matches: /^menu|show menu/i });
 
 
 bot.dialog('/initialquestions', [
@@ -1318,14 +1354,26 @@ bot.beginDialogAction('accessrequestfailure', '/accessrequestfailure');
 
 bot.dialog('/I am receiving an error message', [
     function (session) {
+        builder.Prompts.choice(session, "Does you error message match any of these?", "Your client does not support opening this list with Windows Explorer|Secure Proxy Server -Error Report|Page cannot be displayed|Unable to submit Request and Tracking Site (RTS) form to request a site|Error occured. Access denied.  You do not have permission to perform this action or access this resource|No match");
+    },
+    function (session, results) {
+        if (results.response && results.response.entity != 'No match') {
+            // Launch demo dialog
+            session.beginDialog('/' + results.response.entity);
+        } else {
+            // Exit the menu
+            session.endDialog();
+        }
+    }
+    //function (session) {
 
-        session.send("Does you error message match any of these?");
+   //     session.send("Does you error message match any of these?");
       //  session.send("Test 1 \n Test 2 \n Test 3 \n");
-        session.send("[Your client does not support opening this list with Windows Explorer.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Secure Proxy Server -Error Report.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Page cannot be displayed.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Unable to submit Request and Tracking Site (RTS) form to request a site.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Error occured. Access denied.  You do not have permission to perform this action or access this resource](https://ey.service-now.com/kb_view.do?sysparm_article=KB0090786)");
+   //     session.send("[Your client does not support opening this list with Windows Explorer.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Secure Proxy Server -Error Report.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Page cannot be displayed.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Unable to submit Request and Tracking Site (RTS) form to request a site.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)\n [Error occured. Access denied.  You do not have permission to perform this action or access this resource](https://ey.service-now.com/kb_view.do?sysparm_article=KB0090786)");
 
       // session.beginDialog('yeskb');
-      session.beginDialog('/yeskb');
-    }
+    //  session.beginDialog('/yeskb');
+    //}
 ]);
 bot.beginDialogAction('I am receiving an error message', '/I am receiving an error message'); 
 
