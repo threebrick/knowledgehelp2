@@ -387,7 +387,7 @@ bot.beginDialogAction('Does Factiva have a mobile App?', '/Does Factiva have a m
 
 bot.dialog('/What is Discover', [
     function (session) {
-        builder.Prompts.choice(session, "Discover is EY's global knowledge portal, it connects you to documents, people and communities so that you can harness the knowledge and expertise of all of EY. \nI can answer a lot of common questions on Discover - either type your question or the number of any of the frequent questions below:", "How can I access EY Discover?|How is Discover different from the search on the EY home page?|How can I contribute to Discover?|What is the best way to search for a Credential?");
+        builder.Prompts.choice(session, "Discover is EY's global knowledge portal, it connects you to documents, people and communities so that you can harness the knowledge and expertise of all of EY. \nBelow are some common questions people ask about Discover, type the number to learn more or type 5 to ask your own question:", "How can I access EY Discover?|How is Discover different from the search on the EY home page?|How can I contribute to Discover?|What is the best way to search for a Credential?");
     },
     function (session, results) {
         if (results.response && results.response.entity != '(quit)') {
@@ -395,7 +395,10 @@ bot.dialog('/What is Discover', [
             session.beginDialog('/' + results.response.entity);
         } else {
             // Exit the menu
-            session.endDialog();
+            //session.endDialog();
+            session.userData.question = results.response.entity;
+            // Trigger Search
+            session.beginDialog('searchqna2:/');
         }
     }
 ]);
@@ -1695,7 +1698,7 @@ bot.dialog('/creditcard', [
 //            ]);
 //        session.send(msg);
         //session.endDialog(msg);
-        session.send("Please click [here](http://chs.ey.net/servlet/CHSRenderingServlet?contentlD=CT-BB) for step-by-step details on how to purchase Questnet reports.");
+        session.send("Please click [here](http://chs.ey.net/servlet/CHSRenderingServlet?contentID=CT-BBED0AF038A8C8AD85257CEC00512EAB&chsReplicaID=852576F00003462C) for step-by-step details on how to purchase Questnet reports.");
         session.beginDialog('/waitforaccount');
     }
 ]);
