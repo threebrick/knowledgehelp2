@@ -108,7 +108,7 @@ bot.dialog('/menu', [
         session.send(msg);
         //session.endDialog(msg);
     },
-    function (session, results) {
+    function (session, results, next) {
     //    if (results.response && results.response.entity != '(quit)') {
         if (results.response.entity == 'initialquestions') {
             // Launch demo dialog
@@ -117,14 +117,17 @@ bot.dialog('/menu', [
             // Exit the menu
             //session.endDialog();
             // session.userData.product = "Factiva";
-                    session.userData.question = results.response.entity;
-                    // Trigger Search
-                    session.beginDialog('searchqna2:/');
+            session.userData.question = results.response.entity;
+            next();
         }
     },
+    
     function (session, results) {
         // The menu runs a loop until the user chooses to (quit).
-        session.replaceDialog('/menu');
+        //session.replaceDialog('/menu');
+        
+        // Trigger Search
+        session.beginDialog('searchqna2:/');
     }
 ]).reloadAction('reloadMenu', null, { matches: /^menu|show menu/i });   
 
