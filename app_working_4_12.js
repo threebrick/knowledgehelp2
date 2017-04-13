@@ -2,7 +2,6 @@ var util = require('util');
 var _ = require('lodash');
 var builder = require('botbuilder');
 var restify = require('restify');
-var cognitiveservices = require('botbuilder-cognitiveservices');
 
 //var nodemailer = require('nodemailer');
 
@@ -15,27 +14,39 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 
 
 // Initialize the middleware
-var BotmetricsMiddleware = require('botmetrics-botframework-middleware').BotmetricsMiddleware({
+//var BotmetricsMiddleware = require('botmetrics-botframework-middleware').BotmetricsMiddleware({
 //  botId: process.env.BOTMETRICS_BOT_ID,
 //  apiKey: process.env.BOTMETRICS_API_KEY
 
-    botId: '87464d12c04c',
-    apiKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NjgsImV4cCI6MTgwNzQ5MTk1N30.eVQscEUJPNMhi-_h23unO8yben5uLAS5aXxBC4rDbs4'
-});
+ //   botId: '87464d12c04c',
+ //   apiKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NjgsImV4cCI6MTgwNzQ5MTk1N30.eVQscEUJPNMhi-_h23unO8yben5uLAS5aXxBC4rDbs4'
+//});
  
 // Create chat bot
 var connector = new builder.ChatConnector({
-    appId: '96acae49-5736-448e-ab33-d8e3a2d55182',
-    appPassword: 'ocA7Ea8PSdjpb4S6FUYOTAa'
-    //appId: process.env.MICROSOFT_APP_ID,
-    //appPassword: process.env.MICROSOFT_APP_PASSWORD
+    //appId: '96acae49-5736-448e-ab33-d8e3a2d55182',
+    //appPassword: 'ocA7Ea8PSdjpb4S6FUYOTAa'
+    appId: process.env.MICROSOFT_APP_ID,
+    appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 var bot = new builder.UniversalBot(connector);
-server.post('https://knowledgehelp2.azurewebsites.net/api/messages', connector.listen());
-//server.post('/api/messages', connector.listen());
+//server.post('https://knowledgehelp2.azurewebsites.net/api/messages', connector.listen());
+server.post('/api/messages', connector.listen());
 
  
-
+// Root dialog, triggers search and process its results
+//bot.dialog('/', [
+//    function (session) {
+        // Trigger Search
+//        session.beginDialog('searchqna2:/');
+//    },
+//    function (session, args) {
+        // Process selected search results
+//        session.send(
+//            'Done! For future reference, you selected these properties: %s',
+//            args.selection.map(i => i.key).join(', '));
+//    }
+//]);
 
 //=========================================================
 // Bots Global Actions
@@ -81,24 +92,42 @@ bot.dialog('/menu', [
     
  function (session) {
 
-   //     var msg = new builder.Message(session)
-   //         .textFormat(builder.TextFormat.xml)
-   //         .attachments([
-   //             new builder.HeroCard(session)
+        var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
                     
-   //                 .text("How can I help you today? Please click the 'what can I ask you' button to get started.")
+                    .text("How can I help you today? Please click the 'what can I ask you' button to get started.")
                     
-   //                 .buttons([
-   //                     builder.CardAction.dialogAction(session, "initialquestions", null, "What can I ask you?")
+                    .buttons([
+                        builder.CardAction.dialogAction(session, "initialquestions", null, "What can I ask you?")
                         
                 //        builder.CardAction.dialogAction(session, "speaktoadvisor", null, "How can I speak to an Advisor?")
-   //                 ])
-   //         ]);
-   //     session.send(msg);
+                    ])
+            ]);
+        session.send(msg);
         //session.endDialog(msg);
+    },
+    function (session, results) {
+    //    if (results.response && results.response.entity != '(quit)') {
+        if (results.response.entity == 'initialquestions') {
+            // Launch demo dialog
+            session.beginDialog('/' + results.response.entity);
+        } else {
+            // Exit the menu
+            //session.endDialog();
+            // session.userData.product = "Factiva";
+            session.userData.question = results.response.entity;
+           // next();
 
-        session.beginDialog('/initialquestions');
+           
+           
+        }
 
+        session.on('error', function (err) {
+            session.send('Failed with message: %s', err.message);
+            session.endDialog();
+        });
     }
     
     
@@ -145,7 +174,7 @@ bot.dialog('/menu', [
 
 bot.dialog('/initialquestions', [
     function (session) {
-        builder.Prompts.choice(session, "How may I help you?  Please select one of the following options:", "Finding a research tool|Collaborating using SharePoint|Submitting knowledge|Help with EY Delivers*|Locating business info on Singapore or Malaysia companies*|Help using Factiva|Help using Discover|FAQs");
+        builder.Prompts.choice(session, "What can I ask you?  Often, people ask me for help?", "Finding a research tool|Collaborating using SharePoint|Submitting knowledge|Help with EY Delivers*|Locating business info on Singapore or Malaysia companies*|Help using Factiva|Help using Discover");
     },
     function (session, results) {
         if (results.response && results.response.entity != '(quit)') {
@@ -167,82 +196,6 @@ bot.dialog('/speaktoadvisor', [
 bot.beginDialogAction('speaktoadvisor', '/speaktoadvisor'); 
 
 
-
-
-// QnA Maker Dialogs
-
-var recognizer = new cognitiveservices.QnAMakerRecognizer({
-	knowledgeBaseId: '9aaee0d2-b646-4429-8077-4ba2ef749f32', 
-	subscriptionKey: '8c803a75c188429d95d7b6d4dc2d5d12'});
-
-var BasicQnAMakerDialog = new cognitiveservices.QnAMakerDialog({ 
-	recognizers: [recognizer],
-	defaultMessage: 'How may we help you?  Please ask your question.',
-	qnaThreshold: 0.5});
-
-
-
-bot.dialog('/FAQs', BasicQnAMakerDialog);
-//bot.beginDialogAction('FAQs', '/FAQs'); 
-
-
-bot.dialog('/faqhelp', [
-    function (session) {
-       // session.send("Please contact your Engagment Administrator to arrange access. You will find the Engament Administrators names on the site's Engagement Form, which you can open by clicking on the engagement name in [Request & Tracking Site (RTS)](https://eyd-us.ey.com/sites/eydelivers_rts/RTSDefaultPages/) Active Engagements view. From your EYDelivers site you can also find the contacts via the Ressources link under Eng. & Project Admin.");
-
-        var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
-                    
-                    .text("Does this help?")
-                    
-                    .buttons([
-                        builder.CardAction.dialogAction(session, "faqsuccess", null, "Yes"),
-                        
-                        builder.CardAction.dialogAction(session, "faqfailure", null, "No")
-                    ])
-            ]);
-        session.send(msg);
-        //session.endDialog(msg);
-    }
-]);
-bot.beginDialogAction('faqhelp', '/faqhelp'); 
-
-
-bot.dialog('/faqsuccess', [
-    function (session) {
-
-        var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
-                    
-                    .text("Great, can I help you with anything else?")
-                    
-                    .buttons([
-                        builder.CardAction.dialogAction(session, "menu", null, "Yes"),
-                        
-                        builder.CardAction.dialogAction(session, "goodbye", null, "No")
-                    ])
-            ]);
-        session.send(msg);
-        //session.endDialog(msg);
-    }
-]);
-bot.beginDialogAction('faqsuccess', '/faqsuccess'); 
-
-
-
-bot.dialog('/faqfailure', [
-    function (session) {
-
-        session.send("I'm sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our [EYD tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087Request) or you may like to contact the [Client Portal Helpesk](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagment Admin.");
-       // session.send("Access Request Failure.");
-
-    }   
-]);
-bot.beginDialogAction('faqfailure', '/faqfailure'); 
 
 
 
@@ -2168,12 +2121,12 @@ bot.beginDialogAction('howtohelp', '/howtohelp');
 
 
 // Use the botmetrics middleware
-bot.use(
-  {
-    receive: BotmetricsMiddleware.receive,
-    send: BotmetricsMiddleware.send
-  }
-);
+//bot.use(
+//  {
+//    receive: BotmetricsMiddleware.receive,
+//    send: BotmetricsMiddleware.send
+//  }
+//);
  
 // end the botmetrics middleware
 
