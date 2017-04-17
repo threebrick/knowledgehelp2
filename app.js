@@ -148,12 +148,13 @@ bot.dialog('/initialquestions', [
         builder.Prompts.choice(session, "How may I help you?  Please select one of the following options:", "Finding a research tool|Collaborating using SharePoint|Submitting knowledge|Help with EY Delivers*|Locating business info on Singapore or Malaysia companies*|Help using Factiva|Help using Discover|FAQs");
     },
     function (session, results) {
-        if (results.response && results.response.entity != '(quit)') {
+        if (results.response && results.response.entity != '(quit)' || results.response.entity != 'Help using Factiva' || results.response.entity != 'Help using Discover') {
             // Launch demo dialog
             session.beginDialog('/' + results.response.entity);
         } else {
             // Exit the menu
-            session.endDialog();
+            //session.endDialog();
+            session.beginDialog('/FAQs');
         }
     }
 ]);
@@ -177,8 +178,8 @@ var recognizer = new cognitiveservices.QnAMakerRecognizer({
 
 var BasicQnAMakerDialog = new cognitiveservices.QnAMakerDialog({ 
 	recognizers: [recognizer],
-	defaultMessage: 'How may we help you?  Please ask your question.',
-    defaultNoMatchMessage: 'No match found!  Please re-enter your search or type \'menu\' to return to the main menu.',
+//	defaultMessage: 'How may we help you?  Please ask your question.',
+//    defaultNoMatchMessage: 'No match found!  Please re-enter your search or type \'menu\' to return to the main menu.',
 	qnaThreshold: 0.5});
 
 
