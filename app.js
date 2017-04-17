@@ -178,6 +178,7 @@ var recognizer = new cognitiveservices.QnAMakerRecognizer({
 var BasicQnAMakerDialog = new cognitiveservices.QnAMakerDialog({ 
 	recognizers: [recognizer],
 	defaultMessage: 'How may we help you?  Please ask your question.',
+    defaultNoMatchMessage: 'No match found!  Please re-enter your search or type \'menu\' to return to the main menu.',
 	qnaThreshold: 0.5});
 
 
