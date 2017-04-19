@@ -177,7 +177,7 @@ var recognizer = new cognitiveservices.QnAMakerRecognizer({
 
 var BasicQnAMakerDialog = new cognitiveservices.QnAMakerDialog({ 
 	recognizers: [recognizer],
-	defaultMessage: 'How may we help you?  Please ask your question.',
+	defaultMessage: 'Ask me any question',
 //    defaultNoMatchMessage: 'No match found!  Please re-enter your search or type \'menu\' to return to the main menu.',
 	qnaThreshold: 0.5});
 
@@ -294,7 +294,7 @@ bot.beginDialogAction('Locating business info on Singapore or Malaysia companies
 
 bot.dialog('/Help using Factiva*', [
     function (session) {
-        session.beginDialog('/FAQs');
+        session.beginDialog('/FAQs*');
     }
 ]);
 bot.beginDialogAction('Help using Factiva*', '/Help using Factiva*'); 
@@ -426,7 +426,7 @@ bot.beginDialogAction('Does Factiva have a mobile App?', '/Does Factiva have a m
 
 bot.dialog('/Help using Discover*', [
     function (session) {
-        session.beginDialog('/FAQs');
+        session.beginDialog('/FAQs*');
     }
 ]);
 bot.beginDialogAction('Help using Discover*', '/Help using Discover*'); 
