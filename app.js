@@ -183,7 +183,7 @@ var BasicQnAMakerDialog = new cognitiveservices.QnAMakerDialog({
 
 
 
-bot.dialog('/FAQs', BasicQnAMakerDialog);
+bot.dialog('/FAQs*', BasicQnAMakerDialog);
 //bot.beginDialogAction('FAQs', '/FAQs'); 
 
 
