@@ -145,16 +145,15 @@ bot.dialog('/menu', [
 
 bot.dialog('/initialquestions', [
     function (session) {
-        builder.Prompts.choice(session, "How may I help you?  Please select one of the following options:", "Finding a research tool|Collaborating using SharePoint|Submitting knowledge|Help with EY Delivers*|Locating business info on Singapore or Malaysia companies*|Help using Factiva|Help using Discover|FAQs");
+        builder.Prompts.choice(session, "How may I help you?  Please select one of the following options:", "Finding a research tool|Collaborating using SharePoint|Submitting knowledge|Help with EY Delivers*|Locating business info on Singapore or Malaysia companies*|Help using Factiva*|Help using Discover*|FAQs*");
     },
     function (session, results) {
-        if (results.response && results.response.entity != '(quit)' || results.response.entity != 'Help using Factiva' || results.response.entity != 'Help using Discover') {
+        if (results.response && results.response.entity != '(quit)') {
             // Launch demo dialog
             session.beginDialog('/' + results.response.entity);
         } else {
             // Exit the menu
-            //session.endDialog();
-            session.beginDialog('/FAQs');
+            session.endDialog();
         }
     }
 ]);
@@ -178,7 +177,7 @@ var recognizer = new cognitiveservices.QnAMakerRecognizer({
 
 var BasicQnAMakerDialog = new cognitiveservices.QnAMakerDialog({ 
 	recognizers: [recognizer],
-//	defaultMessage: 'How may we help you?  Please ask your question.',
+	defaultMessage: 'How may we help you?  Please ask your question.',
 //    defaultNoMatchMessage: 'No match found!  Please re-enter your search or type \'menu\' to return to the main menu.',
 	qnaThreshold: 0.5});
 
@@ -293,21 +292,12 @@ bot.beginDialogAction('Locating business info on Singapore or Malaysia companies
 
 
 
-bot.dialog('/Help using Factiva', [
+bot.dialog('/Help using Factiva*', [
     function (session) {
-        builder.Prompts.choice(session, "Factiva is one of our most popular External Sources and contains news and business information from over 32,000 sources. \nIf your question is one of the below, please type the number.  If not, you can ask your question and I'll try to find the answer for you.", "How do I build an effective search in Factiva|How can I set up alerts on my client or topic|Can Factiva find company, industry or executive profiles|How do I use Factiva quotes and charts?|Does Factiva have a mobile App?");
-    },
-    function (session, results) {
-        if (results.response && results.response.entity != '(quit)') {
-            // Launch demo dialog
-            session.beginDialog('/' + results.response.entity);
-        } else {
-            // Exit the menu
-            session.endDialog();
-        }
+        session.beginDialog('/FAQs');
     }
 ]);
-bot.beginDialogAction('Help using Factiva', '/Help using Factiva'); 
+bot.beginDialogAction('Help using Factiva*', '/Help using Factiva*'); 
 
 
 // Factiva FAQ Search Code
@@ -434,35 +424,12 @@ bot.beginDialogAction('Does Factiva have a mobile App?', '/Does Factiva have a m
 
 
 
-bot.dialog('/Help using Discover', [
+bot.dialog('/Help using Discover*', [
     function (session) {
-        builder.Prompts.choice(session, "Discover is EY's global knowledge portal, it connects you to documents, people and communities so that you can harness the knowledge and expertise of all of EY. \nBelow are some common questions people ask about Discover, type the number to learn more or type 5 to ask your own question:", "How can I access EY Discover?|How is Discover different from the search on the EY home page?|How can I contribute to Discover?|What is the best way to search for a Credential?");
-    },
-    function (session, results) {
-        if (results.response && results.response.entity != '(quit)') {
-            // Launch demo dialog
-            session.beginDialog('/' + results.response.entity);
-        } else {
-            // Exit the menu
-            //session.endDialog();
-            session.userData.question = results.response.entity;
-            // Trigger Search
-            session.beginDialog('searchqna2:/');
-        }
-    },
-    function (session, args) {
-        // Process selected search results
-        session.send(
-            'Done! For future reference, you bookmarked the following questions: %s',
-            args.selection.map(i => i.key).join(', '));
-    },
-  function (session) {
-
-        session.send("How may I help you?");
-
+        session.beginDialog('/FAQs');
     }
 ]);
-bot.beginDialogAction('Help using Discover', '/Help using Discover'); 
+bot.beginDialogAction('Help using Discover*', '/Help using Discover*'); 
 
 
 // Discover FAQ Search Code
