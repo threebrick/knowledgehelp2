@@ -1401,17 +1401,10 @@ bot.beginDialogAction('accessrequestfailure', '/accessrequestfailure');
 
 bot.dialog('/I am receiving an error message', [
     function (session) {
-        builder.Prompts.choice(session, "Does you error message match any of these?", "[Your client does not support opening this list with Windows Explorer](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)|Secure Proxy Server -Error Report|Page cannot be displayed|Unable to submit Request and Tracking Site (RTS) form to request a site|Error occured. Access denied.  You do not have permission to perform this action or access this resource|No match");
-    },
-    function (session, results) {
-        if (results.response && results.response.entity != 'No match') {
-            // Launch demo dialog
-            session.beginDialog('/' + results.response.entity);
-        } else {
-            // Exit the menu
-            session.endDialog();
-        }
-    }
+        builder.Prompts.choice(session, "Does you error message match any of these?  You may click any of the following links for more information.", "[Your client does not support opening this list with Windows Explorer](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)|[Secure Proxy Server -Error Report](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)|[Page cannot be displayed](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)|[Unable to submit Request and Tracking Site (RTS) form to request a site](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)|[Error occured. Access denied.  You do not have permission to perform this action or access this resource](https://ey.service-now.com/kb_view.do?sysparm_article=KB0090786)");
+        
+        session.beginDialog('/yeskb');
+    }    
     //function (session) {
 
    //     session.send("Does you error message match any of these?");
