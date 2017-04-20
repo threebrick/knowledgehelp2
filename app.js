@@ -185,6 +185,7 @@ var BasicQnAMakerDialog = new cognitiveservices.QnAMakerDialog({
 
 bot.dialog('/FAQs*', BasicQnAMakerDialog);
 //bot.beginDialogAction('FAQs', '/FAQs'); 
+bot.beginDialogAction('FAQs*', '/FAQs*'); 
 
 
 bot.dialog('/faqhelp', [
@@ -249,7 +250,7 @@ bot.dialog('/faqfailure', [
                     .text("Would you like to 'Search again', return to the 'Main Menu' or 'Speak to an Advisor'?")
                     
                     .buttons([
-                        builder.CardAction.dialogAction(session, "FAQs", null, "Search again"),
+                        builder.CardAction.dialogAction(session, "FAQs*", null, "Search again"),
                         builder.CardAction.dialogAction(session, "menu", null, "Main Menu"),
                         
                         builder.CardAction.dialogAction(session, "speaktoadvisor", null, "Speak to an Advisor")
