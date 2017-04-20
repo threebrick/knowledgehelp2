@@ -850,7 +850,7 @@ bot.dialog('/sorrymessage', [
     
     function (session) {
 
-        session.send("Sorry that I've not been able to answer your question here, however this is more comprehensive support on our [EYD tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087) or you may like to contact the [Client Portal Helpdesk](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagement Admin.");
+        session.send("Sorry that I have not been able to answer your question here, however this is more comprehensive support on our [EYD tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087) or you may like to contact the [Client Portal Helpdesk](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagement Admin.");
 
         
         
