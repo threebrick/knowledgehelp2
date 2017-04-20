@@ -850,7 +850,7 @@ bot.dialog('/sorrymessage', [
     
     function (session) {
 
-        session.send("Sorry that I've not been able to answer your question here, however this is more comprehensive support on our [EYD tools page]((http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087) or you may like to contact the [Client Portal Helpdesk]( http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagement Admin.");
+        session.send("Sorry that I've not been able to answer your question here, however this is more comprehensive support on our [EYD tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087) or you may like to contact the [Client Portal Helpdesk](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagement Admin.");
 
         
         
@@ -899,7 +899,7 @@ bot.dialog('/notcompletedelearning', [
     
     function (session) {
 
-        session.send("Your EYDeliverssite should be available within 24 hours Of requesting it if all the listed Engagment Administrators have taken and passed the EYDelivers for [Engagement Administrators eLearning](https://eyfs.intellinex.com/eysso/sso_login.aspx?DeepLinkKey=569f6d4f-882a-41bc-81f9-0a871f2c999) at least 48hours before initiating the request for a new site. You can obtain a status update on your EYDelivers siterequest by contacting [Client Portal Helpdesk]( http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2).");
+        session.send("Your EYDeliverssite should be available within 24 hours Of requesting it if all the listed Engagment Administrators have taken and passed the EYDelivers for [Engagement Administrators eLearning](https://eyfs.intellinex.com/eysso/sso_login.aspx?DeepLinkKey=569f6d4f-882a-41bc-81f9-0a871f2c999) at least 48hours before initiating the request for a new site. You can obtain a status update on your EYDelivers site request by contacting [Client Portal Helpdesk]( http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2).");
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
