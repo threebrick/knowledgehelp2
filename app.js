@@ -103,7 +103,7 @@ bot.dialog('/menu', [
     
     
 
-]).reloadAction('reloadMenu', null, { matches: /^menu|show menu/i });   
+]).reloadAction('reloadMenu', null, { matches: /^menu|show menu|main menu/i });   
 
  //   function (session) {
 //        builder.Prompts.choice(session,
@@ -1401,7 +1401,7 @@ bot.beginDialogAction('accessrequestfailure', '/accessrequestfailure');
 
 bot.dialog('/I am receiving an error message', [
     function (session) {
-        builder.Prompts.choice(session, "Does you error message match any of these?", "Your client does not support opening this list with Windows Explorer|Secure Proxy Server -Error Report|Page cannot be displayed|Unable to submit Request and Tracking Site (RTS) form to request a site|Error occured. Access denied.  You do not have permission to perform this action or access this resource|No match");
+        builder.Prompts.choice(session, "Does you error message match any of these?", "[Your client does not support opening this list with Windows Explorer](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)|Secure Proxy Server -Error Report|Page cannot be displayed|Unable to submit Request and Tracking Site (RTS) form to request a site|Error occured. Access denied.  You do not have permission to perform this action or access this resource|No match");
     },
     function (session, results) {
         if (results.response && results.response.entity != 'No match') {
