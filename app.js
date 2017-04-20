@@ -442,7 +442,7 @@ bot.beginDialogAction('Does Factiva have a mobile App?', '/Does Factiva have a m
 
 bot.dialog('/Help using Discover*', [
     function (session) {
-        builder.Prompts.choice(session, "Discover is EY's global knowledge portal, it connects you to documents, people and communities so that you can harness the knowledge and expertise of all of EY. \nBelow are some common questions people ask about Discover, type the number to learn more or type 5 to ask your own question:", "How can I access EY Discover?|How is Discover different from the search on the EY home page?|How can I contribute to Discover?|What is the best way to search for a Credential?");
+        builder.Prompts.choice(session, "Discover is EY's global knowledge portal, it connects you to documents, people and communities so that you can harness the knowledge and expertise of all of EY. \nBelow are some common questions people ask about Discover, type the number to learn more or type 5 to ask your own question:", "How can I access EY Discover?|How is Discover different from the search on the EY home page?|How can I contribute to Discover?|What is the best way to search for a Credential?|Ask a question");
     },
     function (session, results) {
         if (results.response && results.response.entity != '(quit)') {
@@ -511,6 +511,16 @@ bot.dialog('/What is the best way to search for a Credential?', [
 
 ]);
 bot.beginDialogAction('What is the best way to search for a Credential?', '/What is the best way to search for a Credential?');
+
+bot.dialog('/Ask a question', [
+    function (session) {
+        
+        // Trigger Search
+        session.beginDialog('/FAQs*');
+    }   
+
+]);
+bot.beginDialogAction('Ask a question', '/Ask a question');
 
 
 
