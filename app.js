@@ -1164,7 +1164,7 @@ bot.dialog('/multiplepeople', [
                     .buttons([
                         builder.CardAction.dialogAction(session, "accessrequestsuccess", null, "Yes"),
                         
-                        builder.CardAction.dialogAction(session, "accessrequestfailure2", null, "No")
+                        builder.CardAction.dialogAction(session, "accessrequestfailure", null, "No")
                     ])
             ]);
         session.send(msg);
