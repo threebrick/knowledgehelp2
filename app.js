@@ -1260,13 +1260,13 @@ bot.dialog('/shouldwesubmit2', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("Would you like to submit now?")
+                    .text("Would you like to submit now or re-enter the information?")
                     
                     .buttons([
                         
-                        builder.CardAction.dialogAction(session, "addanother", null, "Yes"),
+                        builder.CardAction.dialogAction(session, "addanother", null, "Submit now"),
                         
-                        builder.CardAction.dialogAction(session, "oneperson", null, "No")
+                        builder.CardAction.dialogAction(session, "oneperson", null, "Re-enter information")
                     ])
             ]);
         session.send(msg);
