@@ -1947,9 +1947,8 @@ bot.beginDialogAction('acrachargecodequestions', '/acrachargecodequestions');   
 
 bot.dialog('/shouldwesubmit', [
     
-    
     function (session) {
-        //session.send("These requests are handled Monday-Wednesday 9:00am-3:30pm and Thursday 09:00- 11:30am (Sydney time). If your query is urgent and outside of these times please contact Knowledge Help quoting message ‘urgent-questnet-bot’.");
+//        builder.Prompts.choice(session, "What demo would you like to run?", "ticket|prompts|picture|cards|list|carousel|receipt|actions|(quit)");
 //		builder.Prompts.choice(session, "How may I help you?", "ticket|cards|carousel|receipt|actions|(quit)");
 
         var msg = new builder.Message(session)
@@ -1957,18 +1956,20 @@ bot.dialog('/shouldwesubmit', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("Would you like to submit now?")
+                    .text("Would you like to submit this information now or re-enter the information?")
                     
                     .buttons([
                         //builder.CardAction.dialogAction(session, "ticketcomplete", null, "Yes"),
-                        builder.CardAction.dialogAction(session, "acraticketsubmit", null, "Yes"),
+                        builder.CardAction.dialogAction(session, "acraticketsubmit", null, "Submit"),
                         
-                        builder.CardAction.dialogAction(session, "acrachargecodequestions", null, "No")
+                        builder.CardAction.dialogAction(session, "acrachargecodequestions", null, "Re-enter Information")
                     ])
             ]);
         session.send(msg);
         //session.endDialog(msg);
     }
+    
+    
     
 ]);
 bot.beginDialogAction('shouldwesubmit', '/shouldwesubmit');   // <-- no 'matches' option means this can only be triggered by a button.
