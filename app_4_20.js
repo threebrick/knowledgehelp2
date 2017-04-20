@@ -219,13 +219,12 @@ bot.dialog('/faqsuccess', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("Great! Would you like to 'Ask another question', return to the 'Main Menu' or 'Exit'?")
+                    .text("Great, can I help you with anything else?")
                     
                     .buttons([
-                        builder.CardAction.dialogAction(session, "FAQs", null, "Search again"),
-                        builder.CardAction.dialogAction(session, "menu", null, "Main Menu"),
+                        builder.CardAction.dialogAction(session, "menu", null, "Yes"),
                         
-                        builder.CardAction.dialogAction(session, "goodbye", null, "Exit")
+                        builder.CardAction.dialogAction(session, "goodbye", null, "No")
                     ])
             ]);
         session.send(msg);
@@ -239,23 +238,8 @@ bot.beginDialogAction('faqsuccess', '/faqsuccess');
 bot.dialog('/faqfailure', [
     function (session) {
 
-        //session.send("I'm sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our [EYD tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087) or you may like to contact the [Client Portal Helpesk](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagment Admin.");
+        session.send("I'm sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our [EYD tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087Request) or you may like to contact the [Client Portal Helpesk](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagment Admin.");
        // session.send("Access Request Failure.");
-       var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
-                    
-                    .text("Would you like to 'Search again', return to the 'Main Menu' or 'Speak to an Advisor'?")
-                    
-                    .buttons([
-                        builder.CardAction.dialogAction(session, "FAQs", null, "Search again"),
-                        builder.CardAction.dialogAction(session, "menu", null, "Main Menu"),
-                        
-                        builder.CardAction.dialogAction(session, "speaktoadvisor", null, "Speak to an Advisor")
-                    ])
-            ]);
-        session.send(msg);
 
     }   
 ]);
@@ -442,19 +426,7 @@ bot.beginDialogAction('Does Factiva have a mobile App?', '/Does Factiva have a m
 
 bot.dialog('/Help using Discover*', [
     function (session) {
-        builder.Prompts.choice(session, "Discover is EY's global knowledge portal, it connects you to documents, people and communities so that you can harness the knowledge and expertise of all of EY. \nBelow are some common questions people ask about Discover, type the number to learn more or type 5 to ask your own question:", "How can I access EY Discover?|How is Discover different from the search on the EY home page?|How can I contribute to Discover?|What is the best way to search for a Credential?");
-    },
-    function (session, results) {
-        if (results.response && results.response.entity != '(quit)') {
-            // Launch demo dialog
-            session.beginDialog('/' + results.response.entity);
-        } else {
-            // Exit the menu
-            //session.endDialog();
-            session.userData.question = results.response.entity;
-            // Trigger Search
-            session.beginDialog('/FAQs*');
-        }
+        session.beginDialog('/FAQs*');
     }
 ]);
 bot.beginDialogAction('Help using Discover*', '/Help using Discover*'); 
@@ -468,8 +440,19 @@ bot.dialog('/How can I access EY Discover?', [
         session.userData.product = "Discover";
         session.userData.question = "How can I access EY Discover?";
         // Trigger Search
-        session.beginDialog('/FAQs*');
-    } 
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
+    }   
 
 ]);
 bot.beginDialogAction('How can I access EY Discover?', '/How can I access EY Discover?'); 
@@ -480,8 +463,19 @@ bot.dialog('/How is Discover different from the search on the EY home page?', [
         session.userData.product = "Discover";
         session.userData.question = "How is Discover different from the search on the EY home page?";
         // Trigger Search
-        session.beginDialog('/FAQs*');
-    }  
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
+    }   
 
 ]);
 bot.beginDialogAction('How is Discover different from the search on the EY home page?', '/How is Discover different from the search on the EY home page?');
@@ -493,8 +487,19 @@ bot.dialog('/How can I contribute to Discover?', [
         session.userData.product = "Discover";
         session.userData.question = "How can I contribute to Discover?";
         // Trigger Search
-        session.beginDialog('/FAQs*');
-    }  
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
+    }   
 
 ]);
 bot.beginDialogAction('How can I contribute to Discover?', '/How can I contribute to Discover?');
@@ -506,7 +511,18 @@ bot.dialog('/What is the best way to search for a Credential?', [
         session.userData.product = "Discover";
         session.userData.question = "What is the best way to search for a Credential?";
         // Trigger Search
-        session.beginDialog('/FAQs*');
+        session.beginDialog('searchqna2:/');
+    },
+    function (session, args) {
+        // Process selected search results
+        session.send(
+            'Done! For future reference, you bookmarked the following questions: %s',
+            args.selection.map(i => i.key).join(', '));
+    },
+  function (session) {
+
+        session.send("How may I help you?");
+
     }   
 
 ]);
@@ -850,7 +866,7 @@ bot.dialog('/sorrymessage', [
     
     function (session) {
 
-        session.send("Sorry that I've not been able to answer your question here, however this is more comprehensive support on our [EYD tools page]((http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087) or you may like to contact the [Client Portal Helpdesk]( http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagement Admin.");
+        session.send("Sorry that I've not been able to answer your question here, however this is more comprehensive support on our [EYD tools page]((http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087Request) or you may like to contact the [Client Portal Helpdesk]( http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagement Admin.");
 
         
         
@@ -958,8 +974,8 @@ bot.dialog('/existingsitefailure', [
     
     function (session) {
 
-      //  session.send("Sorry that I’ve not been able to answer your question here. There is more comprehensive support on our [EYDelivers tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087) or you may like to contact your local [Knowledge Help team](http://chs.ey.net/knowledgehelpContact) or ask your question in the [EYD/WPP Yammer group](https://www.yammer.com/ey.com/#/threads/inGroup?type=in_group&feedId=2770414EYD)");
-      session.send("I'm sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our [EYDelivers tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087) or you may like to contact the [Client Portal Helpdesk](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) (part of IT Services) by phone or email");
+      //  session.send("Sorry that I’ve not been able to answer your question here. There is more comprehensive support on our [EYDelivers tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087Request) or you may like to contact your local [Knowledge Help team](http://chs.ey.net/knowledgehelpContact) or ask your question in the [EYD/WPP Yammer group](https://www.yammer.com/ey.com/#/threads/inGroup?type=in_group&feedId=2770414EYD)");
+      session.send("I'm sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our [EYDelivers tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087Request) or you may like to contact the [Client Portal Helpdesk](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) (part of IT Services) by phone or email");
 
         
     }
@@ -1236,7 +1252,7 @@ bot.dialog('/oneperson', [
                   
             ]);
         session.send(msg);
-        session.beginDialog('/shouldwesubmit2');
+        session.beginDialog('/addanother');
 
         
         
@@ -1248,33 +1264,6 @@ bot.dialog('/oneperson', [
 ]);
 bot.beginDialogAction('oneperson', '/oneperson');   // <-- no 'matches' option means this can only be triggered by a button.
 
-
-bot.dialog('/shouldwesubmit2', [
-    
-    
-    function (session) {
-
-
-        var msg = new builder.Message(session)
-            .textFormat(builder.TextFormat.xml)
-            .attachments([
-                new builder.HeroCard(session)
-                    
-                    .text("Would you like to submit now?")
-                    
-                    .buttons([
-                        
-                        builder.CardAction.dialogAction(session, "addanother", null, "Yes"),
-                        
-                        builder.CardAction.dialogAction(session, "oneperson", null, "No")
-                    ])
-            ]);
-        session.send(msg);
-        //session.endDialog(msg);
-    }
-    
-]);
-bot.beginDialogAction('shouldwesubmit2', '/shouldwesubmit2');   // <-- no 'matches' option means this can only be triggered by a button.
 
 
 bot.dialog('/addanother', [
@@ -1372,7 +1361,7 @@ bot.beginDialogAction('accessrequestsuccess', '/accessrequestsuccess');
 bot.dialog('/accessrequestfailure', [
     function (session) {
 
-        session.send("I'm sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our [EYD tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087) or you may like to contact the [Client Portal Helpesk](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagment Admin.");
+        session.send("I'm sorry that I’ve not been able to answer your question here, however there is more comprehensive support on our [EYD tools page](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=LP-8C1E1313DF94999185257C7D0067F087Request) or you may like to contact the [Client Portal Helpesk](http://chs.ey.net/servlet/CHSRenderingServlet?chsReplicaID=852576F00003462C&contentID=CT-73A58812C88CD149C1257C71003712A2) or your Engagment Admin.");
        // session.send("Access Request Failure.");
 
     }   
