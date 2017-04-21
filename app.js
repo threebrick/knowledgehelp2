@@ -205,8 +205,8 @@ bot.dialog('/faqhelp', [
                         builder.CardAction.dialogAction(session, "faqfailure", null, "No")
                     ])
             ]);
-        //session.send(msg);
-        session.endDialog(msg);
+        session.send(msg);
+        //session.endDialog(msg);
     }
 ]);
 bot.beginDialogAction('faqhelp', '/faqhelp'); 
