@@ -16,8 +16,8 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 
 // Initialize the middleware
 var BotmetricsMiddleware = require('botmetrics-botframework-middleware').BotmetricsMiddleware({
-//  botId: process.env.BOTMETRICS_BOT_ID,
-//  apiKey: process.env.BOTMETRICS_API_KEY
+  botId: process.env.BOTMETRICS_BOT_ID,
+  apiKey: process.env.BOTMETRICS_API_KEY
 
     botId: '87464d12c04c',
     apiKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NjgsImV4cCI6MTgwNzQ5MTk1N30.eVQscEUJPNMhi-_h23unO8yben5uLAS5aXxBC4rDbs4'
@@ -27,8 +27,8 @@ var BotmetricsMiddleware = require('botmetrics-botframework-middleware').Botmetr
 var connector = new builder.ChatConnector({
     appId: '96acae49-5736-448e-ab33-d8e3a2d55182',
     appPassword: 'ocA7Ea8PSdjpb4S6FUYOTAa'
-    //appId: process.env.MICROSOFT_APP_ID,
-    //appPassword: process.env.MICROSOFT_APP_PASSWORD
+  //  appId: process.env.MICROSOFT_APP_ID,
+  //  appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 var bot = new builder.UniversalBot(connector);
 server.post('https://knowledgehelp2.azurewebsites.net/api/messages', connector.listen());
@@ -48,7 +48,7 @@ bot.beginDialogAction('menu', '/menu', { matches: /^menu|show menu|main menu/i }
 //=========================================================
 // Bots Dialogs
 //=========================================================
-
+ 
 // Root dialog, triggers search and process its results
 bot.dialog('/', [
     function (session) {
@@ -79,7 +79,7 @@ const WhatOption = 'What can I ask you?';
 
 bot.dialog('/menu', [
     
- function (session) {
+ function (session, args) {
 
    //     var msg = new builder.Message(session)
    //         .textFormat(builder.TextFormat.xml)
@@ -95,7 +95,7 @@ bot.dialog('/menu', [
    //                 ])
    //         ]);
    //     session.send(msg);
-        //session.endDialog(msg);
+        
 
         session.beginDialog('/initialquestions');
 
@@ -205,8 +205,8 @@ bot.dialog('/faqhelp', [
                         builder.CardAction.dialogAction(session, "faqfailure", null, "No")
                     ])
             ]);
-        session.send(msg);
-        //session.endDialog(msg);
+        //session.send(msg);
+        session.endDialog(msg);
     }
 ]);
 bot.beginDialogAction('faqhelp', '/faqhelp'); 
@@ -214,6 +214,8 @@ bot.beginDialogAction('faqhelp', '/faqhelp');
 
 bot.dialog('/faqsuccess', [
     function (session) {
+
+        
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -223,17 +225,21 @@ bot.dialog('/faqsuccess', [
                     .text("Great! Would you like to 'Ask another question', return to the 'Main Menu' or 'Exit'?")
                     
                     .buttons([
-                        builder.CardAction.dialogAction(session, "FAQs*", null, "Search again"),
+                        builder.CardAction.dialogAction(session, "FAQs*", null, "Ask another question"),
                         builder.CardAction.dialogAction(session, "menu", null, "Main Menu"),
                         
                         builder.CardAction.dialogAction(session, "goodbye", null, "Exit")
                     ])
             ]);
-        session.send(msg);
-        //session.endDialog(msg);
+        //session.send(msg);
+        session.endDialog(msg);
     }
 ]);
 bot.beginDialogAction('faqsuccess', '/faqsuccess'); 
+
+bot.dialog('/PreFAQs', BasicQnAMakerDialog);
+//bot.beginDialogAction('FAQs', '/FAQs'); 
+bot.beginDialogAction('PreFAQs', '/PreFAQs');   
 
 
 
@@ -469,7 +475,7 @@ bot.dialog('/How can I access EY Discover?', [
         session.userData.product = "Discover";
         session.userData.question = "How can I access EY Discover?";
         // Trigger Search
-        session.beginDialog('/FAQs*');
+        session.beginDialog('/FAQTemplate');
     } 
 
 ]);
@@ -481,7 +487,7 @@ bot.dialog('/How is Discover different from the search on the EY home page?', [
         session.userData.product = "Discover";
         session.userData.question = "How is Discover different from the search on the EY home page?";
         // Trigger Search
-        session.beginDialog('/FAQs*');
+        session.beginDialog('/FAQTemplate');
     }  
 
 ]);
@@ -494,7 +500,7 @@ bot.dialog('/How can I contribute to Discover?', [
         session.userData.product = "Discover";
         session.userData.question = "How can I contribute to Discover?";
         // Trigger Search
-        session.beginDialog('/FAQs*');
+        session.beginDialog('/FAQTemplate');
     }  
 
 ]);
@@ -507,7 +513,7 @@ bot.dialog('/What is the best way to search for a Credential?', [
         session.userData.product = "Discover";
         session.userData.question = "What is the best way to search for a Credential?";
         // Trigger Search
-        session.beginDialog('/FAQs*');
+        session.beginDialog('/FAQTemplate');
     }   
 
 ]);
@@ -522,6 +528,45 @@ bot.dialog('/Ask a question', [
 
 ]);
 bot.beginDialogAction('Ask a question', '/Ask a question');
+
+
+
+bot.dialog('/FAQTemplate', [
+    function (session) {
+
+    var Answer1 = "You can access Discover from [here](https://find.ey.net/discover) or from the link in the EY Essentials section of the EY Home Page";
+    var Answer2 = "Search from the EY Home Pages returns resources from all searchable systems and databases within the firm.  Discover provides a tailored search experience for finding knowledge documents, people and communities.";
+    var Answer3 = "Answer 3";
+    var Answer4 = "Answer 4";
+    
+
+        // Trigger Search
+        if (session.userData.question == "How can I access EY Discover?") {
+            session.send('Q. %s \nA. %s',
+                session.userData.question,
+                Answer1);
+        } else if (session.userData.question == "How is Discover different from the search on the EY home page?") {
+            session.send('Q. %s \nA. %s',
+                session.userData.question,
+                Answer2);
+        } else if (session.userData.question == "How can I contribute to Discover?") {
+            session.send('Q. %s \nA. %s',
+                session.userData.question,
+                Answer3);
+        } else if (session.userData.question == "What is the best way to search for a Credential?") {
+            session.send('Q. %s \nA. %s',
+                session.userData.question,
+                Answer4);
+
+        }
+
+        session.beginDialog('/faqhelp');
+    }   
+
+]);
+bot.beginDialogAction('FAQTemplate', '/FAQTemplate');
+
+
 
 
 
@@ -1412,9 +1457,19 @@ bot.beginDialogAction('accessrequestfailure', '/accessrequestfailure');
 
 bot.dialog('/I am receiving an error message', [
     function (session) {
-        builder.Prompts.choice(session, "Does you error message match any of these?  You may click any of the following links for more information.", "[Your client does not support opening this list with Windows Explorer](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)|[Secure Proxy Server -Error Report](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)|[Page cannot be displayed](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)|[Unable to submit Request and Tracking Site (RTS) form to request a site](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)|[Error occured. Access denied.  You do not have permission to perform this action or access this resource](https://ey.service-now.com/kb_view.do?sysparm_article=KB0090786)");
+        builder.Prompts.choice(session, "Does you error message match any of these?  You may click any of the following links for more information.", "Your client does not support opening this list with Windows Explorer|Secure Proxy Server -Error Report|Page cannot be displayed|Unable to submit Request and Tracking Site (RTS) form to request a site|Error occured. Access denied.  You do not have permission to perform this action or access this resource");
         
-        session.beginDialog('/yeskb');
+        
+    },
+
+    function (session, results) {
+        if (results.response && results.response.entity != '(quit)') {
+            // Launch demo dialog
+            session.beginDialog('/' + results.response.entity);
+        } else {
+            // Exit the menu
+            session.endDialog();
+        }
     }    
     //function (session) {
 
@@ -1429,10 +1484,64 @@ bot.dialog('/I am receiving an error message', [
 bot.beginDialogAction('I am receiving an error message', '/I am receiving an error message'); 
 
 
-bot.dialog('/yeskb', [
+bot.dialog('/Your client does not support opening this list with Windows Explorer', [
     function (session) {
 
-      //  session.send("View the knowledge article - https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016");
+        session.send("If you are receiving the following error message, you may click the link to get more information: \n[Your client does not support opening this list with Windows Explorer.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)  ");
+        session.beginDialog('/errorhelp');
+
+    }   
+]);
+bot.beginDialogAction('Your client does not support opening this list with Windows Explorer', '/Your client does not support opening this list with Windows Explorer');
+
+
+bot.dialog('/Secure Proxy Server -Error Report', [
+    function (session) {
+
+        session.send("If you are receiving the following error message, you may click the link to get more information: \n[Secure Proxy Server -Error Report.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)");
+        session.beginDialog('/errorhelp');
+
+    }   
+]);
+bot.beginDialogAction('Secure Proxy Server -Error Report', '/Secure Proxy Server -Error Report');
+
+
+bot.dialog('/Page cannot be displayed', [
+    function (session) {
+
+        session.send("If you are receiving the following error message, you may click the link to get more information: \n[Page cannot be displayed.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)");
+        session.beginDialog('/errorhelp');
+
+    }   
+]);
+bot.beginDialogAction('Page cannot be displayed', '/Page cannot be displayed');
+
+
+bot.dialog('/Unable to submit Request and Tracking Site (RTS) form to request a site', [
+    function (session) {
+
+        session.send("If you are receiving the following error message, you may click the link to get more information: \n[Unable to submit Request and Tracking Site (RTS) form to request a site.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)");
+        session.beginDialog('/errorhelp');
+
+    }   
+]);
+bot.beginDialogAction('Unable to submit Request and Tracking Site (RTS) form to request a site', '/Unable to submit Request and Tracking Site (RTS) form to request a site');
+
+
+bot.dialog('/Error occured. Access denied.  You do not have permission to perform this action or access this resource', [
+    function (session) {
+
+        session.send("If you are receiving the following error message, you may click the link to get more information: \n[Error occured. Access denied.  You do not have permission to perform this action or access this resource](https://ey.service-now.com/kb_view.do?sysparm_article=KB0090786)");
+        session.beginDialog('/errorhelp');
+
+    }   
+]);
+bot.beginDialogAction('Error occured. Access denied.  You do not have permission to perform this action or access this resource', '/Error occured. Access denied.  You do not have permission to perform this action or access this resource');
+
+bot.dialog('/errorhelp', [
+    function (session) {
+
+      
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -1451,7 +1560,7 @@ bot.dialog('/yeskb', [
         //session.endDialog(msg);
     }
 ]);
-bot.beginDialogAction('yeskb', '/yeskb'); 
+bot.beginDialogAction('errorhelp', '/errorhelp'); 
 
 
 
