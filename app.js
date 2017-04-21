@@ -536,8 +536,8 @@ bot.dialog('/FAQTemplate', [
 
     var Answer1 = "You can access Discover from [here](https://find.ey.net/discover) or from the link in the EY Essentials section of the EY Home Page";
     var Answer2 = "Search from the EY Home Pages returns resources from all searchable systems and databases within the firm.  Discover provides a tailored search experience for finding knowledge documents, people and communities.";
-    var Answer3 = "Answer 3";
-    var Answer4 = "Answer 4";
+    var Answer3 = "You can help to grow and improve the knowledge collection in Discover by simply clicking \"Submit\" from the top menu in Discover";
+    var Answer4 = "To search specifically for a credential, try searching for the name of the type of credential you are looking for, such as ‘Oil and Gas Credentials’ or ‘SAP Credentials’. You may also want to include a keyword that would have been used to describe the type of work EY provided. There are 2 Content Type filters for ‘EY Credentials’, found under ‘Pursuit’ > ‘EY Credentials’ > Engagement Credential and/or Credential Materials.";
     
 
         // Trigger Search
