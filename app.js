@@ -96,14 +96,9 @@ bot.dialog('/menu', [
    //         ]);
    //     session.send(msg);
 //   session.userData.faqTest = args.data;
-        if (session.userData.faqTest == null) {
+        
 
-           session.beginDialog('/initialquestions'); 
-        } else if (session.userData.faqTest == "startFAQ") {
-           session.beginDialog('/FAQs*'); 
-        }
-
-     //   session.beginDialog('/initialquestions');
+        session.beginDialog('/initialquestions');
 
     }
     
@@ -221,7 +216,7 @@ bot.beginDialogAction('faqhelp', '/faqhelp');
 bot.dialog('/faqsuccess', [
     function (session) {
 
-       session.userData.faqTest = "startFAQ"; 
+    //   session.userData.faqTest = "startFAQ"; 
 
         var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
@@ -231,7 +226,7 @@ bot.dialog('/faqsuccess', [
                     .text("Great! Would you like to 'Ask another question', return to the 'Main Menu' or 'Exit'?")
                     
                     .buttons([
-                        builder.CardAction.dialogAction(session, "menu", "startFAQ", "Ask another question"),
+                        builder.CardAction.dialogAction(session, "FAQs*", "startFAQ", "Ask another question"),
                         builder.CardAction.dialogAction(session, "menu", null, "Main Menu"),
                         
                         builder.CardAction.dialogAction(session, "goodbye", null, "Exit")
