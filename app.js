@@ -226,7 +226,7 @@ bot.dialog('/faqsuccess', [
                     .text("Great! Would you like to 'Ask another question', return to the 'Main Menu' or 'Exit'?")
                     
                     .buttons([
-                        builder.CardAction.dialogAction(session, "FAQs*", "startFAQ", "Ask another question"),
+                        builder.CardAction.dialogAction(session, "PreFAQs", "", "Ask another question"),
                         builder.CardAction.dialogAction(session, "menu", null, "Main Menu"),
                         
                         builder.CardAction.dialogAction(session, "goodbye", null, "Exit")
