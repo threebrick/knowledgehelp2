@@ -1,5 +1,3 @@
-//var util = require('util');
-//var _ = require('lodash');
 var builder = require('botbuilder');
 var restify = require('restify');
 var cognitiveservices = require('botbuilder-cognitiveservices');
@@ -31,7 +29,7 @@ var connector = new builder.ChatConnector({
     //appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 var bot = new builder.UniversalBot(connector);
-server.post('https://knowledgehelp2.azurewebsites.net/api/messages', connector.listen());
+    server.post('https://knowledgehelp2.azurewebsites.net/api/messages', connector.listen());
 //server.post('/api/messages', connector.listen());
 
  
@@ -228,10 +226,10 @@ bot.dialog('/faqsuccess', [
             .attachments([
                 new builder.HeroCard(session)
                     
-                    .text("Great! Would you like to 'Ask another question', return to the 'Main Menu' or 'Exit'?")
+                    .text("Great! Would you like to 'Search Again', return to the 'Main Menu' or 'Exit'?")
                     
                     .buttons([
-                        builder.CardAction.dialogAction(session, "FAQs*", "", "Ask another question"),
+                        builder.CardAction.dialogAction(session, "PreFAQs", "", "Search Again"),
                         builder.CardAction.dialogAction(session, "menu", null, "Main Menu"),
                         
                         builder.CardAction.dialogAction(session, "goodbye", null, "Exit")
@@ -243,9 +241,27 @@ bot.dialog('/faqsuccess', [
 ]);
 bot.beginDialogAction('faqsuccess', '/faqsuccess'); 
 
-bot.dialog('/PreFAQs', BasicQnAMakerDialog);
+//bot.dialog('/PreFAQs', BasicQnAMakerDialog);
 //bot.beginDialogAction('FAQs', '/FAQs'); 
-bot.beginDialogAction('PreFAQs', '/PreFAQs');   
+//bot.beginDialogAction('PreFAQs', '/PreFAQs');   
+
+
+bot.dialog('/PreFAQs', [
+    function (session) {
+
+        if (session.userData.product == "Discover") {
+            session.beginDialog('/Help using Discover*');
+        } else if (session.userData.product == "Factiva") {
+            session.beginDialog('/Help using Factiva*');
+        } else {
+            session.beginDialog('/FAQs*');
+        }
+
+       
+
+    }   
+]);
+bot.beginDialogAction('PreFAQs', '/PreFAQs'); 
 
 
 
@@ -262,7 +278,7 @@ bot.dialog('/faqfailure', [
                     .text("Would you like to 'Search again', return to the 'Main Menu' or 'Speak to an Advisor'?")
                     
                     .buttons([
-                        builder.CardAction.dialogAction(session, "FAQs*", null, "Search again"),
+                        builder.CardAction.dialogAction(session, "PreFAQs", null, "Search again"),
                         builder.CardAction.dialogAction(session, "menu", null, "Main Menu"),
                         
                         builder.CardAction.dialogAction(session, "speaktoadvisor", null, "Speak to an Advisor")
@@ -323,6 +339,7 @@ bot.beginDialogAction('Locating business info on Singapore or Malaysia companies
 
 bot.dialog('/Help using Factiva*', [
     function (session) {
+        session.userData.product = "Factiva";
         session.beginDialog('/FAQs*');
     }
 ]);
@@ -339,6 +356,10 @@ bot.beginDialogAction('Help using Factiva*', '/Help using Factiva*');
 
 bot.dialog('/Help using Discover*', [
     function (session) {
+
+
+        session.userData.product = "Discover";
+
         builder.Prompts.choice(session, "Discover is EY's global knowledge portal, it connects you to documents, people and communities so that you can harness the knowledge and expertise of all of EY. \nBelow are some common questions people ask about Discover, type the number to learn more or type 5 to ask your own question:", "How can I access EY Discover?|How is Discover different from the search on the EY home page?|How can I contribute to Discover?|What is the best way to search for a Credential?|Ask a question");
     },
     function (session, results) {
@@ -1505,55 +1526,11 @@ bot.dialog('/I would like some help using EY Delivers', [
         session.userData.product = "EY Delivers";
         session.userData.question = null;
         // Trigger Search
-        session.beginDialog('searchqna2:/');
-    },
-    function (session, args) {
-        // Process selected search results
-        session.send(
-            'Done! For future reference, you bookmarked the following questions: %s',
-            args.selection.map(i => i.key).join(', '));
-    },
-  function (session) {
-
-        session.send("How may I help you?");
-
-    }   
+        session.beginDialog('/FAQs*');
+    }  
 
 ]);
  
-// Azure Search provider
-var AzureSearch = require('SearchProviders/azure-search');
-//var azureSearchClient = AzureSearch.create('searchqna2', '1EA0B804219EEC0AEF8A4FF113A3461B', 'qna-index');
-var azureSearchClient = AzureSearch.create('searchqna2', '3771FE62C21D964C86D9B4832A1B5D9B', 'qna-index');
- 
-/// <reference path="../SearchDialogLibrary/index.d.ts" />
-var SearchDialogLibrary = require('SearchDialogLibrary');
- 
-// RealState Search
-var searchqna1ResultsMapper = SearchDialogLibrary.defaultResultsMapper(searchqna1ToSearchHit);
-var searchqna1 = SearchDialogLibrary.create('searchqna2', {
-    multipleSelection: true,
-    search: (query) => azureSearchClient.search(query).then(searchqna1ResultsMapper),
-    refiners: ['category'],
-    refineFormatter: (refiners) =>
-        _.zipObject(
-            refiners.map(r => 'By ' + _.capitalize(r)),
-            refiners)
-});
- 
-bot.library(searchqna1);
- 
-// Maps the AzureSearch RealState Document into a SearchHit that the Search Library can use
-function searchqna1ToSearchHit(searchqna1) {
-    return {
-        key: searchqna1.id,
-        title: util.format('Question - %s.',
-            searchqna1.question),
-        description: searchqna1.answer
-        //,
-        //imageUrl: realstate.thumbnail
-    };
-}
 
 
 
