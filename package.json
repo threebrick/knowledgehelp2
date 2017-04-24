@@ -23,8 +23,10 @@
     "botbuilder-cognitiveservices": "^1.0.1",
     "botmetrics": "0.0.10",
     "express": "^4.15.2",
+    "html-entities": "^1.2.0",
     "lodash": "^4.17.4",
     "restify": "^4.3.0",
     "util": "^0.10.3"
-  }
+  },
+  "devDependencies": {}
 }

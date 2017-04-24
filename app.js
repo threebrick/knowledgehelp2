@@ -15,24 +15,24 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 
 
 // Initialize the middleware
-var BotmetricsMiddleware = require('botmetrics-botframework-middleware').BotmetricsMiddleware({
-  botId: process.env.BOTMETRICS_BOT_ID,
-  apiKey: process.env.BOTMETRICS_API_KEY,
+//var BotmetricsMiddleware = require('botmetrics-botframework-middleware').BotmetricsMiddleware({
+//  botId: process.env.BOTMETRICS_BOT_ID,
+//  apiKey: process.env.BOTMETRICS_API_KEY,
 
-    botId: '87464d12c04c',
-    apiKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NjgsImV4cCI6MTgwNzQ5MTk1N30.eVQscEUJPNMhi-_h23unO8yben5uLAS5aXxBC4rDbs4'
-});
+//    botId: '87464d12c04c',
+//    apiKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NjgsImV4cCI6MTgwNzQ5MTk1N30.eVQscEUJPNMhi-_h23unO8yben5uLAS5aXxBC4rDbs4'
+//});
  
 // Create chat bot
 var connector = new builder.ChatConnector({
-    appId: '96acae49-5736-448e-ab33-d8e3a2d55182',
-    appPassword: 'ocA7Ea8PSdjpb4S6FUYOTAa'
-  //  appId: process.env.MICROSOFT_APP_ID,
-  //  appPassword: process.env.MICROSOFT_APP_PASSWORD
+//    appId: '96acae49-5736-448e-ab33-d8e3a2d55182',
+//    appPassword: 'ocA7Ea8PSdjpb4S6FUYOTAa'
+    appId: process.env.MICROSOFT_APP_ID,
+    appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 var bot = new builder.UniversalBot(connector);
-server.post('https://knowledgehelp2.azurewebsites.net/api/messages', connector.listen());
-//server.post('/api/messages', connector.listen());
+//server.post('https://knowledgehelp2.azurewebsites.net/api/messages', connector.listen());
+server.post('/api/messages', connector.listen());
 
  
 
@@ -173,8 +173,13 @@ bot.beginDialogAction('speaktoadvisor', '/speaktoadvisor');
 // QnA Maker Dialogs
 
 var recognizer = new cognitiveservices.QnAMakerRecognizer({
-	knowledgeBaseId: '9aaee0d2-b646-4429-8077-4ba2ef749f32', 
-	subscriptionKey: '8c803a75c188429d95d7b6d4dc2d5d12'});
+    // First Repository
+	//knowledgeBaseId: '9aaee0d2-b646-4429-8077-4ba2ef749f32', 
+	//subscriptionKey: '8c803a75c188429d95d7b6d4dc2d5d12'});
+
+    knowledgeBaseId: '45447def-4443-49a4-9ce1-b5a6ff3d7e46', 
+	subscriptionKey: 'cb8ee4538ccc41ab8c3796d64bd93627'});
+
 
 var BasicQnAMakerDialog = new cognitiveservices.QnAMakerDialog({ 
 	recognizers: [recognizer],
@@ -226,7 +231,7 @@ bot.dialog('/faqsuccess', [
                     .text("Great! Would you like to 'Ask another question', return to the 'Main Menu' or 'Exit'?")
                     
                     .buttons([
-                        builder.CardAction.dialogAction(session, "PreFAQs", "", "Ask another question"),
+                        builder.CardAction.dialogAction(session, "FAQs*", "", "Ask another question"),
                         builder.CardAction.dialogAction(session, "menu", null, "Main Menu"),
                         
                         builder.CardAction.dialogAction(session, "goodbye", null, "Exit")
@@ -326,123 +331,7 @@ bot.beginDialogAction('Help using Factiva*', '/Help using Factiva*');
 
 // Factiva FAQ Search Code
 
-bot.dialog('/How do I build an effective search in Factiva', [
-    function (session) {
-        // Adds Product variable
-        session.userData.product = "Factiva";
-        session.userData.question = "How do I build an effective search in Factiva";
-        // Trigger Search
-        session.beginDialog('searchqna2:/');
-    },
-    function (session, args) {
-        // Process selected search results
-        session.send(
-            'Done! For future reference, you bookmarked the following questions: %s',
-            args.selection.map(i => i.key).join(', '));
-    },
-  function (session) {
 
-        session.send("How may I help you?");
-
-    }   
-
-]);
-bot.beginDialogAction('How do I build an effective search in Factiva', '/How do I build an effective search in Factiva'); 
-
-bot.dialog('/How can I set up alerts on my client or topic', [
-    function (session) {
-        // Adds Product variable
-        session.userData.product = "Factiva";
-        session.userData.question = "How can I set up alerts on my client or topic";
-        // Trigger Search
-        session.beginDialog('searchqna2:/');
-    },
-    function (session, args) {
-        // Process selected search results
-        session.send(
-            'Done! For future reference, you bookmarked the following questions: %s',
-            args.selection.map(i => i.key).join(', '));
-    },
-  function (session) {
-
-        session.send("How may I help you?");
-
-    }   
-
-]);
-bot.beginDialogAction('How can I set up alerts on my client or topic', '/How can I set up alerts on my client or topic');
-
-
-bot.dialog('/Can Factiva find company, industry or executive profiles', [
-    function (session) {
-        // Adds Product variable
-        session.userData.product = "Factiva";
-        session.userData.question = "Can Factiva find company, industry or executive profiles";
-        // Trigger Search
-        session.beginDialog('searchqna2:/');
-    },
-    function (session, args) {
-        // Process selected search results
-        session.send(
-            'Done! For future reference, you bookmarked the following questions: %s',
-            args.selection.map(i => i.key).join(', '));
-    },
-  function (session) {
-
-        session.send("How may I help you?");
-
-    }   
-
-]);
-bot.beginDialogAction('Can Factiva find company, industry or executive profiles', '/Can Factiva find company, industry or executive profiles');
-
-
-bot.dialog('/How do I use Factiva quotes and charts?', [
-    function (session) {
-        // Adds Product variable
-        session.userData.product = "Factiva";
-        session.userData.question = "How do I use Factiva quotes and charts?";
-        // Trigger Search
-        session.beginDialog('searchqna2:/');
-    },
-    function (session, args) {
-        // Process selected search results
-        session.send(
-            'Done! For future reference, you bookmarked the following questions: %s',
-            args.selection.map(i => i.key).join(', '));
-    },
-  function (session) {
-
-        session.send("How may I help you?");
-
-    }   
-
-]);
-bot.beginDialogAction('How do I use Factiva quotes and charts?', '/How do I use Factiva quotes and charts?');
-
-
-bot.dialog('/Does Factiva have a mobile App?', [
-    function (session) {
-        // Adds Product variable
-        session.userData.product = "Factiva";
-        session.userData.question = "Does Factiva have a mobile App?";
-        // Trigger Search
-        session.beginDialog('searchqna2:/');
-    },
-    function (session, args) {
-        // Process selected search results
-        session.send(
-            'Done! For future reference, you bookmarked the following questions: %s',
-            args.selection.map(i => i.key).join(', '));
-    },
-  function (session) {
-
-        session.send("How may I help you?");
-
-    }   
-
-]);
-bot.beginDialogAction('Does Factiva have a mobile App?', '/Does Factiva have a mobile App?');
 
 // End Factiva FAQ Search Code
 
@@ -543,19 +432,19 @@ bot.dialog('/FAQTemplate', [
 
         // Trigger Search
         if (session.userData.question == "How can I access EY Discover?") {
-            session.send('Q. %s \nA. %s',
+            session.send('**Q.** %s \n\n **A.** %s',
                 session.userData.question,
                 Answer1);
         } else if (session.userData.question == "How is Discover different from the search on the EY home page?") {
-            session.send('Q. %s \nA. %s',
+            session.send('**Q.** %s \n\n **A.** %s',
                 session.userData.question,
                 Answer2);
         } else if (session.userData.question == "How can I contribute to Discover?") {
-            session.send('Q. %s \nA. %s',
+            session.send('**Q.** %s \n\n **A.** %s',
                 session.userData.question,
                 Answer3);
         } else if (session.userData.question == "What is the best way to search for a Credential?") {
-            session.send('Q. %s \nA. %s',
+            session.send('**Q.** %s \n\n **A.** %s',
                 session.userData.question,
                 Answer4);
 
@@ -1488,7 +1377,7 @@ bot.beginDialogAction('I am receiving an error message', '/I am receiving an err
 bot.dialog('/Your client does not support opening this list with Windows Explorer', [
     function (session) {
 
-        session.send("If you are receiving the following error message, you may click the link to get more information: \n[Your client does not support opening this list with Windows Explorer.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)  ");
+        session.send("If you are receiving the following error message, you may click the link to get more information: \n\n [Your client does not support opening this list with Windows Explorer.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)  ");
         session.beginDialog('/errorhelp');
 
     }   
@@ -1499,7 +1388,7 @@ bot.beginDialogAction('Your client does not support opening this list with Windo
 bot.dialog('/Secure Proxy Server -Error Report', [
     function (session) {
 
-        session.send("If you are receiving the following error message, you may click the link to get more information: \n[Secure Proxy Server -Error Report.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)");
+        session.send("If you are receiving the following error message, you may click the link to get more information: \n\n [Secure Proxy Server -Error Report.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)");
         session.beginDialog('/errorhelp');
 
     }   
@@ -1510,7 +1399,7 @@ bot.beginDialogAction('Secure Proxy Server -Error Report', '/Secure Proxy Server
 bot.dialog('/Page cannot be displayed', [
     function (session) {
 
-        session.send("If you are receiving the following error message, you may click the link to get more information: \n[Page cannot be displayed.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)");
+        session.send("If you are receiving the following error message, you may click the link to get more information: \n\n [Page cannot be displayed.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)");
         session.beginDialog('/errorhelp');
 
     }   
@@ -1521,7 +1410,7 @@ bot.beginDialogAction('Page cannot be displayed', '/Page cannot be displayed');
 bot.dialog('/Unable to submit Request and Tracking Site (RTS) form to request a site', [
     function (session) {
 
-        session.send("If you are receiving the following error message, you may click the link to get more information: \n[Unable to submit Request and Tracking Site (RTS) form to request a site.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)");
+        session.send("If you are receiving the following error message, you may click the link to get more information: \n\n [Unable to submit Request and Tracking Site (RTS) form to request a site.](https://ey.service-now.com/kb_view.do?sysparm_article=KB0218016)");
         session.beginDialog('/errorhelp');
 
     }   
@@ -1532,7 +1421,7 @@ bot.beginDialogAction('Unable to submit Request and Tracking Site (RTS) form to 
 bot.dialog('/Error occured. Access denied.  You do not have permission to perform this action or access this resource', [
     function (session) {
 
-        session.send("If you are receiving the following error message, you may click the link to get more information: \n[Error occured. Access denied.  You do not have permission to perform this action or access this resource](https://ey.service-now.com/kb_view.do?sysparm_article=KB0090786)");
+        session.send("If you are receiving the following error message, you may click the link to get more information: \n\n [Error occured. Access denied.  You do not have permission to perform this action or access this resource](https://ey.service-now.com/kb_view.do?sysparm_article=KB0090786)");
         session.beginDialog('/errorhelp');
 
     }   
@@ -2263,12 +2152,12 @@ bot.beginDialogAction('howtohelp', '/howtohelp');
 
 
 // Use the botmetrics middleware
-bot.use(
-  {
-    receive: BotmetricsMiddleware.receive,
-    send: BotmetricsMiddleware.send
-  }
-);
+//bot.use(
+//  {
+//    receive: BotmetricsMiddleware.receive,
+//    send: BotmetricsMiddleware.send
+//  }
+//);
  
 // end the botmetrics middleware
 
