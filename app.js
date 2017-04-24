@@ -14,8 +14,8 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 
 // Initialize the middleware
 var BotmetricsMiddleware = require('botmetrics-botframework-middleware').BotmetricsMiddleware({
-  botId: process.env.BOTMETRICS_BOT_ID,
-  apiKey: process.env.BOTMETRICS_API_KEY,
+  //botId: process.env.BOTMETRICS_BOT_ID,
+  //apiKey: process.env.BOTMETRICS_API_KEY,
 
     botId: '87464d12c04c',
     apiKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NjgsImV4cCI6MTgwNzQ5MTk1N30.eVQscEUJPNMhi-_h23unO8yben5uLAS5aXxBC4rDbs4'
