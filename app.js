@@ -1,5 +1,5 @@
-var util = require('util');
-var _ = require('lodash');
+//var util = require('util');
+//var _ = require('lodash');
 var builder = require('botbuilder');
 var restify = require('restify');
 var cognitiveservices = require('botbuilder-cognitiveservices');
@@ -15,24 +15,24 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 
 
 // Initialize the middleware
-//var BotmetricsMiddleware = require('botmetrics-botframework-middleware').BotmetricsMiddleware({
-//  botId: process.env.BOTMETRICS_BOT_ID,
-//  apiKey: process.env.BOTMETRICS_API_KEY,
+var BotmetricsMiddleware = require('botmetrics-botframework-middleware').BotmetricsMiddleware({
+  botId: process.env.BOTMETRICS_BOT_ID,
+  apiKey: process.env.BOTMETRICS_API_KEY,
 
-//    botId: '87464d12c04c',
-//    apiKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NjgsImV4cCI6MTgwNzQ5MTk1N30.eVQscEUJPNMhi-_h23unO8yben5uLAS5aXxBC4rDbs4'
-//});
+    botId: '87464d12c04c',
+    apiKey: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NjgsImV4cCI6MTgwNzQ5MTk1N30.eVQscEUJPNMhi-_h23unO8yben5uLAS5aXxBC4rDbs4'
+});
  
 // Create chat bot
 var connector = new builder.ChatConnector({
-//    appId: '96acae49-5736-448e-ab33-d8e3a2d55182',
-//    appPassword: 'ocA7Ea8PSdjpb4S6FUYOTAa'
-    appId: process.env.MICROSOFT_APP_ID,
-    appPassword: process.env.MICROSOFT_APP_PASSWORD
+    appId: '96acae49-5736-448e-ab33-d8e3a2d55182',
+    appPassword: 'ocA7Ea8PSdjpb4S6FUYOTAa'
+    //appId: process.env.MICROSOFT_APP_ID,
+    //appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 var bot = new builder.UniversalBot(connector);
-//server.post('https://knowledgehelp2.azurewebsites.net/api/messages', connector.listen());
-server.post('/api/messages', connector.listen());
+server.post('https://knowledgehelp2.azurewebsites.net/api/messages', connector.listen());
+//server.post('/api/messages', connector.listen());
 
  
 
@@ -2152,12 +2152,12 @@ bot.beginDialogAction('howtohelp', '/howtohelp');
 
 
 // Use the botmetrics middleware
-//bot.use(
-//  {
-//    receive: BotmetricsMiddleware.receive,
-//    send: BotmetricsMiddleware.send
-//  }
-//);
+bot.use(
+  {
+    receive: BotmetricsMiddleware.receive,
+    send: BotmetricsMiddleware.send
+  }
+);
  
 // end the botmetrics middleware
 
